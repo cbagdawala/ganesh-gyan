@@ -1,0 +1,52 @@
+{
+  "name": "ganesh-gyan-cli",
+  "version": "1.0.0",
+  "description": "CLI to install the Ganesh Gyan skill (Laravel 13 + Vue 3.5 + PrimeVue 4 + Sanctum conventions) into AI coding assistants like Claude Code and opencode.",
+  "type": "module",
+  "bin": {
+    "gg13": "bin/gg13.mjs"
+  },
+  "files": [
+    "bin",
+    "lib",
+    "assets"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "start": "node bin/gg13.mjs",
+    "lint:skill": "node lib/lint-skill.mjs"
+  },
+  "keywords": [
+    "laravel",
+    "laravel-13",
+    "vue",
+    "vue-3",
+    "primevue",
+    "sanctum",
+    "pest",
+    "claude",
+    "claude-code",
+    "opencode",
+    "ai",
+    "skill",
+    "agent-skill"
+  ],
+  "author": "cbagdawala",
+  "license": "MIT",
+  "homepage": "https://github.com/cbagdawala/ganesh-gyan#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cbagdawala/ganesh-gyan.git"
+  },
+  "bugs": {
+    "url": "https://github.com/cbagdawala/ganesh-gyan/issues"
+  },
+  "dependencies": {
+    "chalk": "^5.3.0",
+    "commander": "^12.1.0",
+    "ora": "^8.1.1",
+    "prompts": "^2.4.2"
+  }
+}
