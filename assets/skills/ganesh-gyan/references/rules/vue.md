@@ -226,6 +226,31 @@ utilities via the `tailwindcss-primeui` plugin (loaded with the Tailwind 4
 @layer tailwind-base, primevue, tailwind-utilities;
 ```
 
+Build wiring uses the **`@tailwindcss/vite`** plugin (Tailwind 4 no longer needs
+`postcss`/`autoprefixer`), alongside `laravel-vite-plugin` and
+`@vitejs/plugin-vue`. The plugin versions must line up (`laravel-vite-plugin`
+3.x ↔ Vite 8):
+
+```typescript
+// vite.config.ts
+import { defineConfig } from 'vite'          // vite ^8
+import laravel from 'laravel-vite-plugin'    // ^3  (requires Vite 8)
+import vue from '@vitejs/plugin-vue'         // ^6
+import tailwindcss from '@tailwindcss/vite'  // ^4
+
+export default defineConfig({
+  plugins: [
+    laravel({
+      input: ['resources/js/app.ts', 'resources/css/app.css'],
+      refresh: true,
+    }),
+    vue(),
+    tailwindcss(),
+  ],
+  resolve: { alias: { '@': '/resources/js' } },
+})
+```
+
 PrimeVue 4 theming is preset-based via `@primevue/themes` and `definePreset`
 (shown above) — the old PrimeVue 3 approach of importing a prebuilt theme CSS
 file and a `primeflex` utility library is gone. To let Tailwind utility classes

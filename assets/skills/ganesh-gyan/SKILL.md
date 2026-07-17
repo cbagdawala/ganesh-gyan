@@ -24,12 +24,12 @@ that match the task, not the whole corpus.
 | Layer | Technology |
 |---|---|
 | Backend | Laravel 13 (PHP 8.3+, slim skeleton — no `Http/Kernel.php` / `Exceptions/Handler.php` / `AuthServiceProvider`) |
-| Frontend | Vue 3.5 + Vite 7 (Composition API, TypeScript) |
+| Frontend | Vue 3.5 + Vite 8 (Composition API, TypeScript) |
 | UI | PrimeVue 4 (Tailwind CSS 4, CSS-first `@theme`) |
 | Auth | Laravel Sanctum — httpOnly cookie session for the web SPA; personal access tokens for mobile |
 | Database | MySQL 8+ |
-| State / Router / HTTP | Pinia 3 · Vue Router 4 · Axios (`withCredentials`) |
-| Testing | Pest 3 |
+| State / Router / HTTP | Pinia 4 · Vue Router 5 · Axios (`withCredentials`) |
+| Testing | Pest 4 |
 | Architecture | MVC + Service Layer; Blade serves the SPA shell |
 
 ## How to use this skill

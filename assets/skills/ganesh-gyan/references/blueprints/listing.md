@@ -1061,16 +1061,19 @@ describe('Article Bulk Actions', function () {
     "dependencies": {
         "primevue": "^4.2.0",
         "vue": "^3.5.0",
+        "vue-router": "^5.0.0",
+        "pinia": "^4.0.0",
         "axios": "^1.7.0",
         "@primevue/themes": "^4.2.0"
     },
     "devDependencies": {
-        "@vitejs/plugin-vue": "^5.0.0",
-        "vite": "^7.0.0",
-        "laravel-vite-plugin": "^1.0.0",
-        "autoprefixer": "^10.4.0",
-        "postcss": "^8.4.0",
-        "tailwindcss": "^4.0.0"
+        "@vitejs/plugin-vue": "^6.0.0",
+        "vite": "^8.0.0",
+        "laravel-vite-plugin": "^3.0.0",
+        "tailwindcss": "^4.0.0",
+        "@tailwindcss/vite": "^4.0.0",
+        "typescript": "^5.9.0",
+        "vue-tsc": "^3.0.0"
     }
 }
 ```

@@ -7,12 +7,12 @@ This directory contains the complete AI ruleset for the **Laravel 13 + Vue 3 + P
 | Layer | Technology |
 |-------|-----------|
 | Backend | Laravel 13 (PHP 8.3+) |
-| Frontend | Vue 3.5 + Vite 7 (Composition API, TypeScript) |
+| Frontend | Vue 3.5 + Vite 8 (Composition API, TypeScript) |
 | UI Library | PrimeVue 4 (Tailwind CSS 4) |
 | Database | MySQL |
 | Auth | Laravel Sanctum (httpOnly cookie session for the SPA; personal access tokens for mobile) |
-| Testing | Pest 3 |
-| State Management | Pinia 3 |
+| Testing | Pest 4 |
+| State Management | Pinia 4 |
 | Router | Vue Router |
 | HTTP Client | Axios (`withCredentials` for Sanctum cookies) |
 | Architecture | MVC + Service Layer, Blade serves SPA shell |

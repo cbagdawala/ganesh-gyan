@@ -11,7 +11,7 @@
 | MySQL | 8.0+ | Primary relational database |
 | Redis | 7.x+ | Caching, sessions, queue driver (Redis 8 is GA in 2026) |
 | Laravel Sanctum | 4.x | First-party API/SPA authentication (cookie sessions + personal access tokens) |
-| Pest | 3.x | PHP testing framework (PHPUnit alternative) |
+| Pest | 4.x | PHP testing framework (PHPUnit alternative) |
 | Artisan Queue | Redis/Database | Async job processing |
 
 ### Frontend
@@ -19,10 +19,10 @@
 | Technology | Version | Purpose |
 |---|---|---|
 | Vue 3 | 3.5+ | UI framework with Composition API |
-| Vite | 7.x | Build tool, HMR, asset bundling |
+| Vite | 8.x | Build tool, HMR, asset bundling |
 | PrimeVue | 4.x | UI component library (Tailwind-based) |
-| Pinia | 3.x | State management |
-| Vue Router | 4.x | Client-side routing |
+| Pinia | 4.x | State management |
+| Vue Router | 5.x | Client-side routing |
 | Axios | 1.x | HTTP client (`withCredentials` for Sanctum cookies / Bearer interceptor for token mode) |
 | TypeScript | 5.x | Typed Vue components (recommended) |
 | Tailwind CSS | 4.x | Utility-first CSS framework (CSS-first config via `@theme`) |
@@ -69,3 +69,57 @@
 - `@vitejs/plugin-vue` — Vue support for Vite
 - `tailwindcss` — Utility CSS
 - `typescript` — TypeScript support
+
+### Exact versions (verified compatible — always use these pins)
+
+These pins install together cleanly on a fresh Laravel 13 app. **Do not invent
+version numbers** — mismatches cause peer-dependency failures. Two facts are
+load-bearing:
+- **`laravel-vite-plugin` 3.x requires Vite 8** (the ladder: plugin 1.x→Vite 5/6, 2.x→Vite 7, 3.x→Vite 8). Never pair a v1/v2 plugin with Vite 8, or Vite 7 with the v3 plugin.
+- **Pinia ships as `pinia` (v4).** There is **no** `@pinia/vue` package — installing it 404s.
+
+**`composer.json` — `require`:**
+```json
+"php": "^8.3",
+"laravel/framework": "^13.0",
+"laravel/sanctum": "^4.0",
+"spatie/laravel-permission": "^8.0",
+"spatie/laravel-activitylog": "^5.0",
+"predis/predis": "^3.0",
+"maatwebsite/excel": "^3.1"
+```
+> `spatie/laravel-activitylog` ^5 needs PHP 8.4; pin `^4` to stay on PHP 8.3.
+
+**`composer.json` — `require-dev`:**
+```json
+"pestphp/pest": "^4.0",
+"pestphp/pest-plugin-laravel": "^4.0",
+"laravel/pint": "^1.0"
+```
+
+**`package.json` — `dependencies`:**
+```json
+"vue": "^3.5",
+"vue-router": "^5.0",
+"pinia": "^4.0",
+"axios": "^1.7",
+"primevue": "^4.2",
+"@primevue/themes": "^4.2",
+"chart.js": "^4.4",
+"vue-chartjs": "^5.3"
+```
+
+**`package.json` — `devDependencies`:**
+```json
+"vite": "^8.0",
+"laravel-vite-plugin": "^3.0",
+"@vitejs/plugin-vue": "^6.0",
+"tailwindcss": "^4.0",
+"@tailwindcss/vite": "^4.0",
+"typescript": "^5.9",
+"vue-tsc": "^3.0"
+```
+> PrimeVue 5 and TypeScript 7 exist but are intentionally not adopted here: the
+> UI guidance is written for PrimeVue 4 (and `@primevue/themes` is still 4.x),
+> and Vue tooling targets TypeScript 5.x. Tailwind 4 uses the `@tailwindcss/vite`
+> plugin — **no** `postcss`/`autoprefixer` entries are needed.

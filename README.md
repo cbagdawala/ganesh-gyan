@@ -60,7 +60,7 @@ A thin `SKILL.md` router over a knowledge base of ~116 documents (loaded on dema
 - **design-system/** — PrimeVue 4 tokens & component guidance
 - **examples/**, **checklists/**, **prompts/**, **modules/**, **decisions/** (ADRs)
 
-Conventions baked in: Laravel Sanctum auth, the Laravel 11+ slim skeleton, PrimeVue 4 component names, Vite 7 / Pinia 3 / Tailwind CSS 4, and snake_case JSON APIs.
+Conventions baked in: Laravel Sanctum auth, the Laravel 11+ slim skeleton, PrimeVue 4 component names, Vite 8 / Pinia 4 / Vue Router 5 / Pest 4 / Tailwind CSS 4, and snake_case JSON APIs.
 
 ## Commands
 

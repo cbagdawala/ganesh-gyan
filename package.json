@@ -1,6 +1,6 @@
 {
   "name": "ganesh-gyan-cli",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "CLI to install the Ganesh Gyan skill (Laravel 13 + Vue 3.5 + PrimeVue 4 + Sanctum conventions) into AI coding assistants like Claude Code and opencode.",
   "type": "module",
   "bin": {

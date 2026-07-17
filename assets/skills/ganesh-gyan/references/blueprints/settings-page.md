@@ -928,7 +928,7 @@ describe('Settings', function () {
         "primevue": "^4.2.0",
         "@primevue/themes": "^4.2.0",
         "vue": "^3.5.0",
-        "pinia": "^2.2.0",
+        "pinia": "^4.0.0",
         "axios": "^1.7.0"
     }
 }

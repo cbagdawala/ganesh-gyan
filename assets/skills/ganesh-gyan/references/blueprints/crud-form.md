@@ -1103,8 +1103,8 @@ class ProjectFactory extends Factory
         "primevue": "^4.2.0",
         "@primevue/themes": "^4.2.0",
         "vue": "^3.5.0",
-        "vue-router": "^4.4.0",
-        "pinia": "^2.2.0",
+        "vue-router": "^5.0.0",
+        "pinia": "^4.0.0",
         "axios": "^1.7.0"
     }
 }
