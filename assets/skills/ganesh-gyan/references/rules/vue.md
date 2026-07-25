@@ -192,7 +192,7 @@ app.use(PrimeVue, {
     preset: TailwindPreset,
     options: {
       prefix: 'p',
-      darkModeClass: 'dark',
+      darkModeSelector: '.dark', // official PrimeVue 4 option — 'darkModeClass' does not exist (falls back to 'system')
       cssLayer: false,
     },
   },
@@ -212,18 +212,29 @@ utilities via the `tailwindcss-primeui` plugin (loaded with the Tailwind 4
 
 ```css
 /* src/assets/styles/main.css */
+
+/* Declare the layer order BEFORE importing Tailwind v4, so `primevue` sits
+   between Tailwind's `base` (preflight) and `utilities`. Tailwind v4 populates
+   the REAL layers `theme, base, components, utilities` — the v3-era names
+   `tailwind-base`/`tailwind-utilities` never intercept preflight, so
+   preflight's `button { background: transparent }` wins the cascade and every
+   PrimeVue Button renders transparent. Pair this order with the PrimeVue
+   `cssLayer` option below. */
+@layer theme, base, primevue, components, utilities;
+
 @import "tailwindcss";
 @plugin "tailwindcss-primeui";
+
+/* Class-driven dark mode: keys Tailwind's `dark:` variant off the same `.dark`
+   class PrimeVue's darkModeSelector uses — without this, Tailwind defaults to
+   the OS media query and the two systems disagree. */
+@custom-variant dark (&:where(.dark, .dark *));
 
 /* Design tokens (replaces the JS theme.extend config from Tailwind 3) */
 @theme {
   --color-brand-500: #0ea5e9;
   --font-sans: "Inter", sans-serif;
 }
-
-/* Declare layer order so Tailwind utilities can override PrimeVue component
-   styles. Pair this with the PrimeVue `cssLayer` option below. */
-@layer tailwind-base, primevue, tailwind-utilities;
 ```
 
 Build wiring uses the **`@tailwindcss/vite`** plugin (Tailwind 4 no longer needs
@@ -262,8 +273,8 @@ app.use(PrimeVue, {
     preset: TailwindPreset,
     options: {
       prefix: 'p',
-      darkModeClass: 'dark',
-      cssLayer: { name: 'primevue', order: 'tailwind-base, primevue, tailwind-utilities' },
+      darkModeSelector: '.dark', // official PrimeVue 4 option — 'darkModeClass' does not exist (falls back to 'system')
+      cssLayer: { name: 'primevue', order: 'theme, base, primevue, components, utilities' },
     },
   },
 })
