@@ -1,5 +1,6 @@
 ---
-name: ganesh-gyan
+name: gg13
+version: 1.2.0
 description: >-
   Use when building or modifying a Laravel 13 + Vue 3.5 + PrimeVue 4 + Sanctum
   application that follows the Divaa conventions — creating CRUD modules, API
@@ -8,7 +9,7 @@ description: >-
   request to the matching rule, blueprint, workflow, skill guide, design-system,
   example, checklist, or ADR under references/. Also covers Sanctum auth, spatie
   permissions, import/export, search, soft-delete, and audit logging.
-  Triggers: "/ganesh-gyan", "follow gg13", "build a module", "create a
+  Triggers: "/gg13", "/ganesh-gyan", "follow gg13", "build a module", "create a
   CRUD/listing/form/dashboard", "add an API endpoint/resource", "add a migration",
   "write Pest tests", "PrimeVue 4 component".
 ---
