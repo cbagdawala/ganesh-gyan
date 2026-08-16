@@ -31,6 +31,7 @@ Then add a pack to your assistant (run inside a project for project scope, or ad
 gg13 init --ai claude       # Claude Code   → .claude/skills/gg13/
 gg13 init --ai opencode     # opencode      → .opencode/skills/gg13/
 gg13 init --ai claude --global   # → ~/.claude/skills/gg13/ (all projects)
+gg13 init --ai claude --link     # → project dir *symlinked* to the global install
 gg13 init --ai all          # every supported assistant
 gg13 init                   # auto-detect + interactive picker
 gg init                     # generic: pick the stack interactively too
@@ -52,11 +53,37 @@ Each install is self-contained: `SKILL.md` plus the merged `references/` corpus
 (common layer + stack pack, stack file wins on collision) is copied into
 `<assistant-dir>/skills/<stack>/`.
 
+## Linked installs (`--link`)
+
+`init --link` makes the project skill folder a **symlink to the global install**
+instead of a second copy, so many projects share one pack and a single global
+update refreshes all of them:
+
+```bash
+gg13 init --ai claude --link     # .claude/skills/gg13 → ~/.claude/skills/gg13
+gg13 update --global             # refreshes every linked project at once
+```
+
+- If no global install exists yet, `--link` creates one and then links to it.
+- `--link` and `--global` are mutually exclusive — the global install *is* the target.
+- **Windows:** a real directory symlink needs Developer Mode or an elevated shell;
+  otherwise a **junction** is used automatically (no privileges required). If
+  neither is possible, `init` falls back to a plain copy and says so.
+- Removing a link (`uninstall`, or `init --force`) only deletes the link — the
+  global install and every other project linked to it are untouched.
+- `update` on a linked project reports the link and skips it, pointing you at
+  `update --global`.
+
+Commit-safety note: a symlink inside `.claude/` is committable but resolves only
+on machines that have the same global install, so `.gitignore` it (or keep using
+plain copies) for repos shared across machines.
+
 ## Update
 
 ```bash
 npm install -g ganesh-gyan-cli@latest
 gg13 update --ai claude       # re-copy the latest bundled pack over an existing install
+gg13 update --global          # refresh the global install (and every linked project)
 ```
 
 Updating also migrates pre-1.2 installs from `skills/ganesh-gyan/` to `skills/gg13/`.
@@ -99,7 +126,7 @@ Every stack bin (`gg13`, `gg8`, `ggci3`, `ggci4`) supports:
 
 | Command | Description |
 |---|---|
-| `<bin> init [--ai <type>] [--global] [--force]` | Install the pack |
+| `<bin> init [--ai <type>] [--global] [--link] [--force]` | Install the pack (`--link` symlinks the project at the global install) |
 | `<bin> update [--ai <type>] [--global]` | Re-copy the bundled pack over an existing install |
 | `<bin> uninstall [--ai <type>] [--global]` | Remove the pack |
 | `<bin> stacks` | List packs and availability |
