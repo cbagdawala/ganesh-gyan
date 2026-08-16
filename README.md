@@ -32,10 +32,22 @@ gg13 init --ai claude       # Claude Code   → .claude/skills/gg13/
 gg13 init --ai opencode     # opencode      → .opencode/skills/gg13/
 gg13 init --ai claude --global   # → ~/.claude/skills/gg13/ (all projects)
 gg13 init --ai claude --link     # → project dir *symlinked* to the global install
+gg13 init --ai claude --copy     # → plain copy, skipping the copy/link prompt
 gg13 init --ai all          # every supported assistant
 gg13 init                   # auto-detect + interactive picker
 gg init                     # generic: pick the stack interactively too
 ```
+
+Run interactively without `--link`/`--copy` and `init` asks which you want:
+
+```
+? How should the gg13 pack be installed into this project?
+› Copy — self-contained, independent of any global install
+  Link — symlink to the global install, refreshed by "update --global"
+```
+
+The prompt is skipped when the mode is already decided — `--link`, `--copy`, or
+`--global` — and in a non-interactive shell (pipe, CI), where it defaults to a copy.
 
 Or without a global install:
 
@@ -64,6 +76,7 @@ gg13 init --ai claude --link     # .claude/skills/gg13 → ~/.claude/skills/gg13
 gg13 update --global             # refreshes every linked project at once
 ```
 
+- Interactive runs are asked copy-or-link; `--link`/`--copy` answer it up front.
 - If no global install exists yet, `--link` creates one and then links to it.
 - `--link` and `--global` are mutually exclusive — the global install *is* the target.
 - **Windows:** a real directory symlink needs Developer Mode or an elevated shell;
@@ -126,7 +139,7 @@ Every stack bin (`gg13`, `gg8`, `ggci3`, `ggci4`) supports:
 
 | Command | Description |
 |---|---|
-| `<bin> init [--ai <type>] [--global] [--link] [--force]` | Install the pack (`--link` symlinks the project at the global install) |
+| `<bin> init [--ai <type>] [--global] [--link\|--copy] [--force]` | Install the pack — asks copy-or-link when neither is given |
 | `<bin> update [--ai <type>] [--global]` | Re-copy the bundled pack over an existing install |
 | `<bin> uninstall [--ai <type>] [--global]` | Remove the pack |
 | `<bin> stacks` | List packs and availability |

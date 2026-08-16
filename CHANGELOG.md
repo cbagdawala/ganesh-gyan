@@ -4,6 +4,11 @@
 
 ### CLI
 
+- **`init` now asks copy-or-link.** An interactive `init` with no mode flag
+  prompts for how the pack should land in the project. The prompt is skipped
+  when `--link`, `--copy` or `--global` already decides it, and in a
+  non-interactive shell (pipe, CI) it defaults to a copy — so existing scripted
+  `init --ai <type>` invocations behave exactly as before.
 - **`init --link` (alias `--symlink`).** Symlinks the project skill folder at the
   global install instead of copying the pack a second time, so many projects
   share one payload and `update --global` refreshes them all at once. Creates
