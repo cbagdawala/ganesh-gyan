@@ -1,6 +1,6 @@
 ---
 name: gg13
-version: 1.2.0
+version: 1.3.1
 description: >-
   Use when building or modifying a Laravel 13 + Vue 3.5 + PrimeVue 4 + Sanctum
   application that follows the Divaa conventions — creating CRUD modules, API

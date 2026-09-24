@@ -154,17 +154,18 @@ PrimeVue is the UI library. Use PrimeVue components for all standard UI patterns
 Configure PrimeVue in the app entry point:
 
 ```typescript
-// src/main.ts
+// resources/js/app.ts
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import PrimeVue from 'primevue/config'
 import ToastService from 'primevue/toastservice'
 import ConfirmationService from 'primevue/confirmationservice'
-import { definePreset } from '@primevue/themes'
-import Aura from '@primevue/themes/aura'
+import { definePreset } from '@primeuix/themes'
+import Aura from '@primeuix/themes/aura'
+import 'primeicons/primeicons.css' // PrimeIcons font — without it every `pi pi-*` icon is blank
 import App from './App.vue'
 import router from './router'
-import './assets/styles/main.css'
+// resources/css/app.css is its own Vite input, loaded by @vite in the Blade shell
 
 const TailwindPreset = definePreset(Aura, {
   semantic: {
@@ -211,7 +212,7 @@ utilities via the `tailwindcss-primeui` plugin (loaded with the Tailwind 4
 `@plugin` directive), and reconcile the two style systems with CSS layers:
 
 ```css
-/* src/assets/styles/main.css */
+/* resources/css/app.css */
 
 /* Declare the layer order BEFORE importing Tailwind v4, so `primevue` sits
    between Tailwind's `base` (preflight) and `utilities`. Tailwind v4 populates
@@ -262,7 +263,8 @@ export default defineConfig({
 })
 ```
 
-PrimeVue 4 theming is preset-based via `@primevue/themes` and `definePreset`
+PrimeVue 4 theming is preset-based via `@primeuix/themes` (`^2.0.3`; migrating an older
+project? see "Migrating" in `rules/project.md`) and `definePreset`
 (shown above) — the old PrimeVue 3 approach of importing a prebuilt theme CSS
 file and a `primeflex` utility library is gone. To let Tailwind utility classes
 win over component styles, enable the CSS layer in the PrimeVue config:
@@ -312,7 +314,7 @@ app.use(PrimeVue, {
 Centralized state management for shared application state.
 
 ```typescript
-// src/stores/user.ts
+// resources/js/stores/user.ts
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import api from '@/api/client'
@@ -417,7 +419,7 @@ export const useUserStore = defineStore('user', () => {
 Client-side routing with lazy-loaded routes.
 
 ```typescript
-// src/router/index.ts
+// resources/js/router/index.ts
 import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 
@@ -490,6 +492,28 @@ router.beforeEach((to, _from, next) => {
 export default router
 ```
 
+### Laravel SPA Catch-All Route
+
+History mode (`createWebHistory`) only works if Laravel returns the SPA shell for
+every client-side path. Without this route, a refresh or deep link such as
+`/projects/12` hits Laravel's 404 instead of Vue Router:
+
+```php
+// routes/web.php — SPA shell: every non-API web path is handled by Vue Router.
+Route::view('/{any?}', 'app')
+    ->where('any', '^(?!(api|sanctum|up)(/|$)).*$')
+    ->name('spa');
+```
+
+The exclusion is anchored to a whole path segment — `(api|sanctum|up)(/|$)`. The
+naive `^(?!api|sanctum|up).*$` also swallows real pages such as
+`/api-documentation` or `/updates`. Keep the list in sync with every other
+non-SPA prefix the app registers (e.g. `broadcasting`, `storage`, `telescope`,
+`horizon`). Register it **last** in `routes/web.php`. The `app` view is the Blade
+shell (`resources/views/app.blade.php`, see `rules/architecture.md`) — minimally
+`@vite(['resources/css/app.css', 'resources/js/app.ts'])` in the head and
+`<div id="app"></div>` in the body.
+
 ## Axios API Client (Sanctum Session Cookies)
 
 Centralized HTTP client for the Sanctum SPA session guard. Authentication rides
@@ -498,7 +522,7 @@ only needs `withCredentials: true` so cookies (and the `X-XSRF-TOKEN` header
 Axios derives from the `XSRF-TOKEN` cookie) are sent on every request.
 
 ```typescript
-// src/api/client.ts
+// resources/js/api/client.ts
 import axios from 'axios'
 import router from '@/router'
 import { useUserStore } from '@/stores/user'
@@ -549,12 +573,28 @@ api.interceptors.response.use(
 export default api
 ```
 
+`import.meta.env.VITE_API_URL` only type-checks when the variable is declared.
+Add an env declaration file next to the entry point:
+
+```typescript
+// resources/js/env.d.ts
+/// <reference types="vite/client" />
+
+interface ImportMetaEnv {
+  readonly VITE_API_URL?: string
+}
+
+interface ImportMeta {
+  readonly env: ImportMetaEnv
+}
+```
+
 ## API Service Layer
 
 Separate API calls into service files for each domain.
 
 ```typescript
-// src/api/services/userApi.ts
+// resources/js/api/services/userApi.ts
 import api from '@/api/client'
 import type { User } from '@/types/user'
 import type { PaginatedResponse, ApiResponse } from '@/types/api'
@@ -589,7 +629,7 @@ export async function deleteUser(id: number): Promise<void> {
 Extract reusable logic into composables (functions starting with `use`).
 
 ```typescript
-// src/composables/usePagination.ts
+// resources/js/composables/usePagination.ts
 import { ref, computed, type Ref } from 'vue'
 
 interface PaginationState {
@@ -634,7 +674,7 @@ export function usePagination(initialPage: number = 1, initialPerPage: number = 
   }
 }
 
-// src/composables/useDebounce.ts
+// resources/js/composables/useDebounce.ts
 import { ref, watch } from 'vue'
 
 export function useDebounce<T>(value: Ref<T>, delay: number = 300): Ref<T> {
@@ -659,7 +699,7 @@ export function useDebounce<T>(value: Ref<T>, delay: number = 300): Ref<T> {
 - Page components go in `pages/`, reusable components in `components/`
 
 ```
-src/components/
+resources/js/components/
 ├── ui/                    # Generic UI components (Button, Input, Modal)
 ├── layout/                # Layout components (Sidebar, Header, Footer)
 └── features/              # Feature-specific components (OrderCard, UserTable)
@@ -727,12 +767,25 @@ const HeavyChart = defineAsyncComponent(() =>
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "skipLibCheck": true,
     "noEmit": true,
-    "baseUrl": ".",
-    "paths": {
-      "@/*": ["src/*"]
-    }
+    "types": ["vite/client"],
+    "paths": { "@/*": ["./resources/js/*"] }
   },
-  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.vue"],
-  "exclude": ["node_modules", "dist"]
+  "include": ["resources/js/**/*.ts", "resources/js/**/*.d.ts", "resources/js/**/*.vue"],
+  "exclude": ["node_modules", "vendor", "public"]
+}
+```
+
+A Laravel app keeps its frontend in `resources/js/` — there is no `src/`. The
+`paths` alias must match the Vite alias (`'@' → /resources/js`), or `vue-tsc`
+cannot resolve any `@/...` import. `"types": ["vite/client"]` supplies the
+`import.meta.env` / asset-import types; declare the app's own `VITE_*` variables
+in `resources/js/env.d.ts` (see the Axios client above).
+
+Wire the check as an npm script and run it in CI / before every PR:
+
+```json
+// package.json
+"scripts": {
+  "typecheck": "vue-tsc --noEmit"
 }
 ```

@@ -150,7 +150,7 @@ Attach screenshots or GIFs for Vue component changes.
 - All tests passing: `./vendor/bin/pest`
 - Frontend build passes: `npm run build`
 - No linting errors: `./vendor/bin/pint --test`
-- No TypeScript errors: `npx vue-tsc --noEmit`
+- No TypeScript errors: `npm run typecheck` (runs `vue-tsc --noEmit`)
 
 ## Code Review Guidelines
 

@@ -160,10 +160,10 @@ Use this checklist when creating or reviewing a Vue 3 + PrimeVue component.
 npm run lint
 
 # Type check
-npm run type-check
+npm run typecheck
 
 # Component tests
-npm run test -- --reporter=verbose src/modules/{module}/components/
+npm run test -- --reporter=verbose resources/js/modules/{module}/components/
 
 # Visual inspection
 # Check at multiple viewport sizes

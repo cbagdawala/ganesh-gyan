@@ -198,11 +198,11 @@ Use semantic tokens rather than raw colors:
 
 Tailwind CSS 4 is **CSS-first**: design tokens live in a `@theme` block in your CSS entry point, and a `tailwind.config.js` is **not required**. So the color scale above is defined as CSS custom properties (see the token tables), and PrimeVue is themed separately via a preset.
 
-Define the PrimeVue preset where you register the plugin (e.g. `resources/js/app.js` / your PrimeVue setup file) — not in a Tailwind config:
+Define the PrimeVue preset where you register the plugin (e.g. `resources/js/app.ts` / your PrimeVue setup file) — not in a Tailwind config:
 
 ```js
-import { definePreset } from '@primevue/themes';
-import Aura from '@primevue/themes/aura';
+import { definePreset } from '@primeuix/themes';
+import Aura from '@primeuix/themes/aura';
 
 const AppPreset = definePreset(Aura, {
   primitive: {

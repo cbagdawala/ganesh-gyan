@@ -254,7 +254,7 @@ app(PermissionRegistrar::class)->forgetCachedPermissions();
 ## Frontend Authorization (Vue)
 
 ```typescript
-// src/composables/useAuthorization.ts
+// resources/js/composables/useAuthorization.ts
 import { computed } from 'vue'
 import { useUserStore } from '@/stores/user'
 

@@ -519,3 +519,39 @@ Route::prefix('v1')->group(function () {
     Route::get('orders/{order}', [OrderController::class, 'show']);
 });
 ```
+
+## SPA Web Route
+
+Blade serves only the SPA shell (`resources/views/app.blade.php`), and Vue Router
+runs in history mode, so `routes/web.php` must hand every non-API path to that
+shell. Without it, a refresh or deep link (e.g. `/projects/12`) returns Laravel's
+404 instead of the SPA.
+
+```php
+// routes/web.php — SPA shell: every non-API web path is handled by Vue Router.
+use Illuminate\Support\Facades\Route;
+
+Route::view('/{any?}', 'app')
+    ->where('any', '^(?!(api|sanctum|up)(/|$)).*$')
+    ->name('spa');
+```
+
+```html
+{{-- resources/views/app.blade.php (minimal) --}}
+<!DOCTYPE html>
+<html>
+<head>
+    @vite(['resources/css/app.css', 'resources/js/app.ts'])
+</head>
+<body>
+    <div id="app"></div>
+</body>
+</html>
+```
+
+- The exclusion is anchored to a whole path segment — `(api|sanctum|up)(/|$)`.
+  The naive `^(?!api|sanctum|up).*$` also excludes real pages such as
+  `/api-documentation` or `/updates`.
+- Keep the list in sync with every other non-SPA prefix the app registers
+  (e.g. `broadcasting`, `storage`, `telescope`, `horizon`).
+- Register it **last** in `routes/web.php` so explicit web routes win.

@@ -12,7 +12,7 @@ Use this checklist before deploying to production.
 - [ ] No merge conflicts
 - [ ] `php artisan pint --test` passes (PSR-12)
 - [ ] `npm run lint` passes
-- [ ] `npm run type-check` passes
+- [ ] `npm run typecheck` passes
 - [ ] No `dd()`, `dump()`, `var_dump()` in code
 - [ ] No `console.log` or `debugger` in Vue files
 - [ ] No hardcoded secrets, API keys, or credentials

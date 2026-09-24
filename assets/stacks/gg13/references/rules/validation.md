@@ -175,7 +175,7 @@ Or use a non-field key:
 Use a validation library (e.g., `vee-validate` with `zod` or `yup`) for form validation:
 
 ```typescript
-// src/validations/userValidation.ts
+// resources/js/validations/userValidation.ts
 import { z } from 'zod'
 
 export const createUserSchema = z.object({

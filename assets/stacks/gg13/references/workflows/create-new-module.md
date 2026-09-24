@@ -192,4 +192,4 @@ php artisan test --coverage
 - [ ] CRUD operations work end-to-end in browser
 - [ ] All tests pass (`php artisan test`)
 - [ ] No PHP lint errors (`php -l` on all created files)
-- [ ] No ESLint/TypeScript errors in Vue files
+- [ ] No ESLint errors in Vue files; `npm run typecheck` passes

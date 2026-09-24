@@ -64,11 +64,14 @@
 - `pinia` — State management
 - `axios` — HTTP client
 - `primevue` — UI components
-- `@primevue/themes` — PrimeVue themes
+- `@primeuix/themes` — PrimeVue 4 theme presets (`definePreset`, `Aura`, …)
+- `primeicons` — PrimeIcons font (`pi pi-*`); import `primeicons/primeicons.css` in the app entry
 - `vite` — Build tool
 - `@vitejs/plugin-vue` — Vue support for Vite
 - `tailwindcss` — Utility CSS
+- `tailwindcss-primeui` — Tailwind 4 plugin for PrimeVue utilities (`@plugin "tailwindcss-primeui";`)
 - `typescript` — TypeScript support
+- `vue-tsc` — Type-checks `.vue` files (`npm run typecheck` → `vue-tsc --noEmit`)
 
 ### Exact versions (verified compatible — always use these pins)
 
@@ -104,7 +107,8 @@ load-bearing:
 "pinia": "^4.0",
 "axios": "^1.7",
 "primevue": "^4.2",
-"@primevue/themes": "^4.2",
+"@primeuix/themes": "^2.0.3",
+"primeicons": "^8.0",
 "chart.js": "^4.4",
 "vue-chartjs": "^5.3"
 ```
@@ -117,9 +121,42 @@ load-bearing:
 "tailwindcss": "^4.0",
 "@tailwindcss/vite": "^4.0",
 "typescript": "^5.9",
-"vue-tsc": "^3.0"
+"vue-tsc": "^3.3",
+"tailwindcss-primeui": "^0.6"
 ```
 > PrimeVue 5 and TypeScript 7 exist but are intentionally not adopted here: the
-> UI guidance is written for PrimeVue 4 (and `@primevue/themes` is still 4.x),
-> and Vue tooling targets TypeScript 5.x. Tailwind 4 uses the `@tailwindcss/vite`
-> plugin — **no** `postcss`/`autoprefixer` entries are needed.
+> UI guidance is written for PrimeVue 4, and Vue tooling targets TypeScript 5.x.
+> The same applies to the theme package: pin **`@primeuix/themes` `^2.0.3`** — the
+> 2.x line is what PrimeVue 4.5.x uses internally. **Do not** install 3.x (npm
+> `latest` is 3.0.1): treat `@primeuix/themes` 3.x as the PrimeVue 5 line.
+> Tailwind 4 uses the `@tailwindcss/vite` plugin — **no** `postcss`/`autoprefixer`
+> entries are needed.
+
+**`package.json` — `scripts`:**
+```json
+"typecheck": "vue-tsc --noEmit"
+```
+`npm run typecheck` is the TypeScript gate for PRs and CI. The `tsconfig.json`
+it relies on (paths under `resources/js/`, `vite/client` types) is in `rules/vue.md`.
+
+### Migrating from `@primevue/themes`
+
+`@primevue/themes` is deprecated on npm ("no longer maintained, migrate to
+@primeuix/themes"). It was only a thin wrapper — `@primevue/themes@4.5.4` just
+depends on `@primeuix/themes@2.0.3` — so the API is identical (`definePreset`,
+`Aura`, `Lara`, `Nora`, `usePreset`, …); only the import path changes. For a
+project still on the old package:
+
+```bash
+npm uninstall @primevue/themes
+npm install @primeuix/themes@^2.0.3
+# update the import lines ('@primevue/themes' → '@primeuix/themes',
+# '@primevue/themes/aura' → '@primeuix/themes/aura', same for /lara, /nora, …),
+# then clear Vite's pre-bundle cache and restart the dev server:
+rm -rf node_modules/.vite
+```
+
+Do not skip the cache step: Vite's optimized-deps cache still references the
+removed package, so re-optimization fails with `ENOENT` on
+`node_modules/@primevue/themes/index.mjs` and the browser hangs on
+`504 (Outdated Optimize Dep)` responses.

@@ -1,5 +1,35 @@
 # Changelog
 
+## 1.3.1 — 2026-09-24
+
+### gg13 pack
+
+Fixes found by setting up a fresh Laravel 13 app strictly from gg13 guidance.
+Verified together: primevue 4.5.5, @primeuix/themes 2.0.3, primeicons 8.0.2,
+tailwindcss-primeui 0.6.1, tailwindcss 4.3, vite 8.3, laravel-vite-plugin 3.2,
+@vitejs/plugin-vue 6.0, vue 3.5.43, vue-router 5.3, pinia 4.0, typescript 5.9.3,
+vue-tsc 3.3.11.
+
+- **`@primevue/themes` → `@primeuix/themes` `^2.0.3`.** The old package is
+  deprecated on npm and was only a wrapper around `@primeuix/themes@2.0.3`; the
+  API is identical, only the import path changes. 3.x is treated as the PrimeVue 5
+  line and is not adopted. `rules/project.md` gains a migration note, including
+  why `node_modules/.vite` must be cleared afterwards.
+- **Pinned `tailwindcss-primeui` (`^0.6`) and `primeicons` (`^8.0`).** The CSS
+  already loaded the plugin and every icon used `pi pi-*`, but neither package
+  was listed, so the build failed and icons rendered blank. The app entry now
+  imports `primeicons/primeicons.css`; `design-system/icons.md` has a Setup section.
+- **`tsconfig.json` targets `resources/js/`.** The example pointed `@/*` and
+  `include` at a non-existent `src/`, and lacked `vite/client` types. Added a
+  `resources/js/env.d.ts` example for `VITE_*` variables, and file-path comments
+  now use Laravel locations.
+- **SPA catch-all route documented.** `routes/web.php` now shows the
+  segment-anchored `Route::view('/{any?}', 'app')` catch-all, so deep links and
+  refreshes reach Vue Router instead of Laravel's 404.
+- All blueprint `package.json` snippets carry the new pins and a
+  `"typecheck": "vue-tsc --noEmit"` script; the PR/release checklists point at
+  `npm run typecheck`.
+
 ## 1.3.0 — 2026-08-16
 
 ### CLI

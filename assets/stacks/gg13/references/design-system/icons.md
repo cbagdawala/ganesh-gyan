@@ -4,6 +4,21 @@
 
 PrimeIcons is the primary icon set for this project. Custom SVG icons are used sparingly for brand-specific or complex illustrations. All icons must meet minimum size and contrast requirements.
 
+## Setup
+
+PrimeIcons is a separate package from PrimeVue — without it every `pi pi-*` icon renders blank.
+
+```bash
+npm install primeicons@^8.0
+```
+
+Import the stylesheet once, in the app entry, alongside the PrimeVue setup:
+
+```ts
+// resources/js/app.ts
+import 'primeicons/primeicons.css'
+```
+
 ## PrimeIcons
 
 ### Usage

@@ -1058,13 +1058,17 @@ describe('Article Bulk Actions', function () {
 
 ```json
 {
+    "scripts": {
+        "typecheck": "vue-tsc --noEmit"
+    },
     "dependencies": {
         "primevue": "^4.2.0",
+        "@primeuix/themes": "^2.0.3",
+        "primeicons": "^8.0.0",
         "vue": "^3.5.0",
         "vue-router": "^5.0.0",
         "pinia": "^4.0.0",
-        "axios": "^1.7.0",
-        "@primevue/themes": "^4.2.0"
+        "axios": "^1.7.0"
     },
     "devDependencies": {
         "@vitejs/plugin-vue": "^6.0.0",
@@ -1073,7 +1077,8 @@ describe('Article Bulk Actions', function () {
         "tailwindcss": "^4.0.0",
         "@tailwindcss/vite": "^4.0.0",
         "typescript": "^5.9.0",
-        "vue-tsc": "^3.0.0"
+        "vue-tsc": "^3.3.0",
+        "tailwindcss-primeui": "^0.6.0"
     }
 }
 ```
@@ -1084,7 +1089,7 @@ describe('Article Bulk Actions', function () {
 
 ```ts
 // resources/js/primevue.config.ts
-import Aura from '@primevue/themes/aura';
+import Aura from '@primeuix/themes/aura';
 import type { AppConfig } from 'primevue/config';
 
 const config: AppConfig = {

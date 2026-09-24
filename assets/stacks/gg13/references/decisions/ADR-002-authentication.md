@@ -111,7 +111,7 @@ public function login(LoginRequest $request): JsonResponse
 ### Vue 3 Side — SPA cookie mode (recommended)
 
 ```ts
-// src/utils/api.ts — cookie mode: no token in JS, browser sends the httpOnly cookie
+// resources/js/utils/api.ts — cookie mode: no token in JS, browser sends the httpOnly cookie
 import axios from 'axios'
 
 const api = axios.create({
@@ -137,7 +137,7 @@ export default api
 ```
 
 ```ts
-// src/stores/auth.ts
+// resources/js/stores/auth.ts
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import api from '@/utils/api'
@@ -169,7 +169,7 @@ export const useAuthStore = defineStore('auth', () => {
 ```
 
 ```ts
-// src/router/guards.ts
+// resources/js/router/guards.ts
 router.beforeEach((to) => {
     const authStore = useAuthStore()
     if (to.meta.requiresAuth && !authStore.user) {

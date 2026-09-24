@@ -686,11 +686,20 @@ class EventFactory extends Factory
 
 ```json
 {
+    "scripts": {
+        "typecheck": "vue-tsc --noEmit"
+    },
     "dependencies": {
         "primevue": "^4.2.0",
-        "@primevue/themes": "^4.2.0",
+        "@primeuix/themes": "^2.0.3",
+        "primeicons": "^8.0.0",
         "vue": "^3.5.0",
         "axios": "^1.7.0"
+    },
+    "devDependencies": {
+        "typescript": "^5.9.0",
+        "vue-tsc": "^3.3.0",
+        "tailwindcss-primeui": "^0.6.0"
     }
 }
 ```

@@ -204,6 +204,11 @@ Blade templates serve only as the SPA shell. The actual UI is rendered by Vue.
 </html>
 ```
 
+`routes/web.php` returns this view for every non-API path via a catch-all
+(`Route::view('/{any?}', 'app')->where('any', '^(?!(api|sanctum|up)(/|$)).*$')`),
+so deep links and refreshes reach Vue Router — see "SPA Web Route" in
+`rules/laravel.md`.
+
 ## Database Layer
 
 - Eloquent ORM with relationships
