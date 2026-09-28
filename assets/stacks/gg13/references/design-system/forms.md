@@ -21,22 +21,113 @@ PrimeVue form components for all input types. Consistent label placement, error 
 
 ### InputNumber
 
+Used for **numeric values** (prices, quantities, counts). `mode="decimal"` is the
+default and is what you want for currency amounts too — `mode="currency"` brings
+locale symbol placement this design system does not use. Use `prefix`/`suffix`
+for units.
+
+**There are three shapes, and the fraction props are what separate them.** Getting
+this wrong makes a field either ugly or — on a phone — impossible to fill in. See
+the warning below.
+
+**Money: pad the fraction.** An amount reads as an amount only when it is always
+two places, so `1650` must display `1650.00`.
+
 ```html
 <InputNumber
   v-model="form.amount"
-  mode="decimal"
   :min="0"
-  :minFractionDigits="2"
-  :maxFractionDigits="2"
+  :min-fraction-digits="2"
+  :max-fraction-digits="2"
   prefix="$"
   suffix=" USD"
   :class="{ 'border-danger-500': errors.amount }"
 />
 ```
 
-- Used for **numeric values** (prices, quantities, counts).
-- Always set `mode="decimal"` for currency.
-- Use `prefix`/`suffix` for units.
+**A quantity: set the MAXIMUM ONLY, never the minimum.** An area, a share, a count
+of rooms. `880` square feet must read `880`, not `880.00`, and `2417.5` must still
+be typable.
+
+```html
+<InputNumber
+  v-model="form.square_feet"
+  :min="0"
+  :max-fraction-digits="2"
+  fluid
+/>
+```
+
+**A whole number: neither prop.** A floor, a bedroom count, a `sort_order`. It
+keeps the numeric keypad, which is correct — see below for why adding a decimal
+key here would be worse than leaving it off.
+
+```html
+<InputNumber v-model="form.bedrooms" :min="0" :max="50" fluid />
+```
+
+#### `max-fraction-digits` is what makes the field usable on a phone
+
+Do not omit it on a field that accepts a fraction, and do not add it to one that
+does not. **One prop drives two separate mechanisms inside `InputNumber`:**
+
+1. **The keypress gate.** A decimal separator is admitted only when
+   `maxFractionDigits` is truthy — the **prop**, not the resolved `Intl` option.
+   That distinction matters: the `Intl` default for decimal mode is 3 places, so
+   the component *formats* 3 decimals while *refusing to let you type one*. With
+   the prop absent, pressing `.` does nothing at all.
+2. **The iOS keypad.** The component computes
+   `mode === 'decimal' && !minFractionDigits ? 'numeric' : 'decimal'`, and iOS
+   renders the `numeric` keypad **with no decimal key**. So a field that
+   deliberately omits `minFractionDigits` to show `880` rather than `880.00`
+   cannot be filled in on a phone at all.
+
+Both live in `primevue/inputnumber/index.mjs`. Check the current source rather
+than trusting a line number — they move between releases.
+
+> ⚠️ `:min-fraction-digits="0"` is **not** a way to opt out of the padding. `!0` is
+> `true`, so the expression above still lands on `numeric`. **Omit the prop.**
+
+#### Fixing the keypad for a whole application at once
+
+Rather than annotating two dozen fields by hand — and missing the next one — set a
+**scoped global pass-through** where the PrimeVue plugin is registered. Make
+`pt.inputnumber.pcInputText` a **function** so it can read each field's own props:
+
+```ts
+pt: {
+    inputnumber: {
+        pcInputText: ({ props }: { props: { maxFractionDigits?: number | null } }) =>
+            Number(props?.maxFractionDigits ?? 0) > 0
+                ? { root: { inputmode: 'decimal' } }
+                : undefined,
+    },
+},
+```
+
+Returning `undefined` leaves PrimeVue's own value in place, which is already right
+for the two cases this must not touch: `mode="currency"` resolves to `decimal` on
+its own, and a whole-number field stays `numeric`.
+
+It works for two reasons worth knowing before you change it. `ptmi()` merges
+pass-through **after** the component's fallthrough attributes, so this wins over
+`InputNumber`'s own binding. And `ptm('pcInputText')` is resolved by
+**`InputNumber`**, not by the child `InputText`, so `props` above is the
+`InputNumber`'s — which is why a function can read `maxFractionDigits` at all.
+
+**Do not make it unconditional.** A decimal key on a whole-number field is a key
+that does nothing when pressed, which reads as a broken field rather than a
+whole-numbered one.
+
+⚠️ Register the pass-through on the **shared options object** every entry point
+uses, not inside one entry. An application with several Vite entries (a staff app,
+a public form, a tenant portal) will otherwise fix the keypad on some screens and
+not others — and the public form is the one most likely to be filled in on a
+phone.
+
+⚠️ If the project has component tests, register PrimeVue in the test harness with
+**the same options object**. A suite configured differently from the application
+cannot see a defect in the application's configuration.
 
 ### Select
 

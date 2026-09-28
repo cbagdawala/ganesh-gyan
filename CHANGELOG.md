@@ -1,5 +1,21 @@
 # Changelog
 
+## 1.3.2 — 2026-09-28
+
+### gg13 pack
+
+- **`InputNumber` fraction props documented.** `design-system/forms.md` now
+  separates three shapes: money (pad with min and max fraction digits of 2), a
+  quantity (set only `max-fraction-digits`) and a whole number (set neither).
+  It explains why `max-fraction-digits` controls whether `.` can be typed and
+  why iOS shows no decimal key when `minFractionDigits` is missing. It also warns
+  that `:min-fraction-digits="0"` does not opt out of the padding.
+- **App-wide keypad fix.** A scoped global pass-through on `pcInputText` sets
+  `inputmode="decimal"` only on fields that accept a fraction. Register it on the
+  shared PrimeVue options used by every entry point and by the test harness.
+- `skills/create-form.md`: the cents-integer price field drops the misleading
+  `:min-fraction-digits="0"`.
+
 ## 1.3.1 — 2026-09-24
 
 ### gg13 pack

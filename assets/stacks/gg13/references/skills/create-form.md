@@ -295,9 +295,14 @@ function handleCancel() {
               v-model="formData.price_cents"
               mode="decimal"
               :min="1"
-              :min-fraction-digits="0"
               :class="{ 'p-invalid': serverErrors?.price_cents }"
             />
+            <!--
+              A cents INTEGER, so NEITHER fraction prop. This carried
+              :min-fraction-digits="0", which reads like an opt-out and is not one:
+              `!0` is `true`. See design-system/forms.md, "max-fraction-digits is
+              what makes the field usable on a phone".
+            -->
             <Message v-if="serverErrors?.price_cents" severity="error" size="small" :text="serverErrors.price_cents[0]" />
           </div>
 
