@@ -1,6 +1,6 @@
 {
   "name": "ganesh-gyan-cli",
-  "version": "1.3.2",
+  "version": "1.3.3",
   "description": "CLI to install Ganesh Gyan intelligence packs (gg13: Laravel 13 + Vue 3.5 + PrimeVue 4 + Sanctum; more stacks planned) into AI coding assistants like Claude Code and opencode.",
   "type": "module",
   "bin": {

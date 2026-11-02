@@ -1,5 +1,23 @@
 # Changelog
 
+## 1.3.3 — 2026-11-02
+
+### CLI
+
+- **`/gg13` works in opencode.** opencode does not expose skills as slash
+  commands, so `init --ai opencode` now also writes a `commands/<stack>.md` shim
+  that loads the skill. `update` refreshes or adds it, and `uninstall` removes it.
+  The file is marked `generated_by: ganesh-gyan-cli`, so a user's own command of
+  that name is kept unless `--force` is given. Verified on opencode 1.18.4.
+- **Duplicate-skill warning.** opencode also discovers `.claude/skills` and
+  `.agents/skills`, so `init` for opencode now warns when it will see more than one
+  copy of the pack, which makes opencode log `duplicate skill name` and keep the
+  first copy it finds (on 1.18.4 a `~/.claude` copy beat the project copy). The
+  check also runs when installing for Claude Code or Antigravity after opencode.
+- Verified end to end: `opencode run --command gg13 …` calls the `skill` tool with
+  `gg13` before answering.
+- README: new "opencode notes" section.
+
 ## 1.3.2 — 2026-09-28
 
 ### gg13 pack

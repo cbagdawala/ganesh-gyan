@@ -29,7 +29,7 @@ Then add a pack to your assistant (run inside a project for project scope, or ad
 
 ```bash
 gg13 init --ai claude       # Claude Code   → .claude/skills/gg13/
-gg13 init --ai opencode     # opencode      → .opencode/skills/gg13/
+gg13 init --ai opencode     # opencode      → .opencode/skills/gg13/ (+ .opencode/commands/gg13.md)
 gg13 init --ai claude --global   # → ~/.claude/skills/gg13/ (all projects)
 gg13 init --ai claude --link     # → project dir *symlinked* to the global install
 gg13 init --ai claude --copy     # → plain copy, skipping the copy/link prompt
@@ -64,6 +64,24 @@ Restart the assistant, then invoke the pack by typing `/gg13` or just asking, e.
 Each install is self-contained: `SKILL.md` plus the merged `references/` corpus
 (common layer + stack pack, stack file wins on collision) is copied into
 `<assistant-dir>/skills/<stack>/`.
+
+### opencode notes
+
+- **`/gg13` in opencode.** opencode loads skills only through its `skill` tool;
+  slash commands come from `commands/*.md`. So `init --ai opencode` also writes
+  `.opencode/commands/gg13.md` (or `~/.config/opencode/commands/gg13.md` with
+  `--global`), which tells the model to load the skill: `/gg13 build a products
+  module` then works as it does in Claude Code. The file is marked
+  `generated_by: ganesh-gyan-cli`; `update` refreshes it, `uninstall` removes it,
+  and a command of yours with the same name is never overwritten without `--force`.
+- **One copy is enough.** opencode also reads `.claude/skills/` and
+  `.agents/skills/` (project and `~/`). If you already installed for Claude Code,
+  opencode sees that pack too, and installing for both (or `--ai all`) makes it log
+  `duplicate skill name` and keep the first copy it finds, which is not
+  necessarily the project one: on opencode 1.18.4 a `~/.claude/skills/gg13` copy
+  was used over `.opencode/skills/gg13`. `init` warns when this happens, in
+  whichever order the installs were made. Keep a single copy, or update all of
+  them together.
 
 ## Linked installs (`--link`)
 
