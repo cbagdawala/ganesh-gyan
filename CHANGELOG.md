@@ -1,5 +1,34 @@
 # Changelog
 
+## 1.4.0 — 2026-11-02
+
+Groundwork for non-Laravel packs: the common layer is now stack-neutral, and
+rules are split into principle (common) and addendum (stack). The installed gg13
+pack keeps every file it had (117) and gains 12.
+
+### Common layer
+
+- **New `references/principles/`**: stack-neutral principles for architecture,
+  authorization, coding-standards, documentation, git, logging, naming,
+  performance, security, testing, validation and UI. Shared by every pack.
+- **Prompts and checklists rewritten stack-neutral**: the six `prompts/` and the
+  `pull-request` / `release` checklists now point to the stack pack by role.
+  gg13 keeps its Laravel/Vue versions as overrides at the same paths.
+- **Moved to gg13**: the PrimeVue design-system files (breadcrumbs, cards,
+  drawers, empty-states, spacing) and the coding-standards, documentation and
+  git rules, all of which were stack-specific.
+- **Lint**: `npm run lint:skill` now fails on framework, library or tool names in
+  the common layer (Laravel, Vue, PrimeVue, Pest, CodeIgniter, …).
+
+### gg13 pack
+
+- `rules/{architecture,authorization,coding-standards,documentation,git,logging,naming,performance,security,testing,validation}.md`
+  are now Laravel 13 + Vue 3.5 addenda: each opens with "Builds on
+  `references/principles/<topic>.md`" and drops only generic restatements; all
+  stack-specific code, config and conventions stay. `git.md` shrank most
+  (190 → 94 lines), since branching and commit rules are now in principles.
+- `SKILL.md` and `references/README.md` route to `principles/`.
+
 ## 1.3.3 — 2026-11-02
 
 ### CLI

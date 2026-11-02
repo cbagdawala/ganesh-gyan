@@ -1,5 +1,7 @@
 # Logging Conventions
 
+> Builds on `references/principles/logging.md` — read it first. This file covers how to apply it on Laravel 13 + Vue 3.5.
+
 ## Laravel Log Channels
 
 ### Configuration
@@ -75,20 +77,14 @@ Log::info("User {$user->id} logged in from {$request->ip()}");
 
 ## Log Levels
 
-| Level | When to Use | Example |
-|---|---|---|
-| `debug` | Development only, verbose tracing | Query details, loop iterations, variable dumps |
-| `info` | Normal operations, significant events | User login, order created, job dispatched |
-| `notice` | Normal but notable events | Cache miss, config change, rate limit reached |
-| `warning` | Unexpected but handled situations | Deprecated API used, slow query detected, retry attempted |
-| `error` | Error conditions that need attention | API call failed, validation exception, service unavailable |
-| `critical` | Critical conditions requiring immediate attention | Database connection lost, auth service down, disk full |
-| `alert` | Action must be taken immediately | Token leak detected, security breach, data corruption |
-| `emergency` | System is unusable | Complete application failure, catastrophic error |
+Laravel exposes all eight levels from the principles table as
+`Log::debug()`, `Log::info()`, `Log::notice()`, `Log::warning()`,
+`Log::error()`, `Log::critical()`, `Log::alert()` and `Log::emergency()`.
+Target a specific channel with `Log::channel('api')->info(...)`.
 
 ## Sensitive Data Masking
 
-Never log sensitive data. Use `$hidden` on models and mask in logs:
+Use `$hidden` on models and mask values in log context:
 
 ```php
 // Models — hide sensitive attributes
@@ -134,8 +130,6 @@ class LoggingServiceProvider extends ServiceProvider
 ```
 
 ## API Request Logging
-
-Log API requests with relevant context:
 
 ```php
 // app/Http/Middleware/ApiLoggingMiddleware.php
@@ -251,8 +245,6 @@ use Throwable;
 > only needed for custom behavior.
 
 ## Log Rotation
-
-Configure log rotation to prevent disk space issues:
 
 ```php
 // config/logging.php

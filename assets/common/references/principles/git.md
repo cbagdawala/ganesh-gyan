@@ -1,4 +1,6 @@
-# Git Conventions
+# Git Principles
+
+Stack-neutral principles. Your stack pack's `references/rules/git.md` shows how to apply them.
 
 ## Branching Strategy
 
@@ -13,6 +15,10 @@ main (protected, production-ready)
 └── release/v2.0.0
 ```
 
+- `main` is always deployable. Nobody pushes to it directly.
+- Branches live for days, not weeks. Merge small, merge often.
+- Hide unfinished work behind a feature flag rather than keeping a long-lived branch.
+
 ### Branch Naming
 
 | Type | Pattern | Example |
@@ -23,6 +29,9 @@ main (protected, production-ready)
 | Refactor | `refactor/{description}` | `refactor/extract-user-service` |
 | Documentation | `docs/{description}` | `docs/update-api-endpoints` |
 | Chore | `chore/{description}` | `chore/update-dependencies` |
+| Release | `release/v{version}` | `release/v2.0.0` |
+
+Use lowercase kebab-case. Add the ticket number when your tracker needs it: `feature/123-order-tracking`.
 
 ## Commit Message Conventions (Conventional Commits)
 
@@ -36,7 +45,7 @@ Format: `<type>(<scope>): <description>`
 | `fix` | Bug fix |
 | `perf` | Performance improvement |
 | `refactor` | Code refactoring (no feature or fix) |
-| `style` | Formatting, missing semi colons, etc. |
+| `style` | Formatting, whitespace, etc. (no logic change) |
 | `docs` | Documentation only changes |
 | `test` | Adding or updating tests |
 | `chore` | Build process, tooling, dependencies |
@@ -45,31 +54,38 @@ Format: `<type>(<scope>): <description>`
 
 ### Scope
 
-The scope is the area of the codebase being affected:
+The scope is the area of the codebase being affected, usually a module or layer:
 
-- `auth`, `user`, `order`, `product`, `cart`, `payment`, `api`, `vue`, `db`, `test`
+- `auth`, `user`, `order`, `product`, `cart`, `payment`, `api`, `ui`, `db`, `test`, `deps`
+
+### Description
+
+- Imperative mood, lowercase, no trailing period: "add", not "added" or "adds".
+- At most about 72 characters for the subject line.
+- Add a body after a blank line when the *why* is not obvious.
+- One logical change per commit. Do not mix a refactor with a feature.
 
 ### Examples
 
 ```
-feat(auth): add Sanctum SPA session login endpoint
+feat(auth): add password reset via email link
 
 fix(order): resolve race condition in stock deduction
 
-perf(api): add eager loading for user profile queries
+perf(api): batch related-record loading in user profile queries
 
 refactor(user): extract password reset logic into service class
 
 docs(api): update OpenAPI spec for v1.2 endpoints
 
-test(order): add feature tests for order cancellation flow
+test(order): add tests for order cancellation flow
 
-chore(deps): update primevue to v4.2.0
+chore(deps): update UI component library to the latest minor version
 ```
 
 ### Breaking Changes
 
-Append `!` after the type/scope and include `BREAKING CHANGE:` footer:
+Append `!` after the type/scope and include a `BREAKING CHANGE:` footer:
 
 ```
 feat(api)!: remove deprecated v0 endpoints
@@ -80,77 +96,55 @@ Migrate to /api/v1/* endpoints before upgrading.
 
 ## Branch Workflow
 
-### Creating a Branch
-
 ```bash
+# Start from an up-to-date main
 git fetch origin
 git checkout main
 git pull origin main
 git checkout -b feature/add-user-avatar
-```
 
-### Before Pushing
-
-```bash
-git add .
-git commit -m "feat(user): add avatar upload component"
+# Commit and push
+git add <files>
+git commit -m "feat(user): add avatar upload"
 git push origin feature/add-user-avatar
-```
 
-### Keeping Branch Updated
-
-```bash
-# Rebase on main before pushing (before PR)
+# Rebase on main before opening or updating a PR
 git fetch origin
 git rebase origin/main
-
-# Force push after rebase
 git push --force-with-lease origin feature/add-user-avatar
 ```
 
-## Pull Requests / Merge Requirements
+- Stage files deliberately. Review `git diff --staged` before committing.
+- Never commit secrets, environment files, credentials, build output, or dependency folders.
+- Use `--force-with-lease`, never plain `--force`, and only on your own branch.
 
-### PR Template
+## Pull Requests
 
-```markdown
-## Description
-Brief description of the changes.
+### PR Content
 
-## Type of Change
-- [ ] New feature
-- [ ] Bug fix
-- [ ] Performance improvement
-- [ ] Refactoring
-- [ ] Documentation
-- [ ] Breaking change
+Every PR description covers:
 
-## Testing
-- [ ] Feature tests added/updated
-- [ ] Unit tests added/updated
-- [ ] All tests passing (`./vendor/bin/pest`)
-- [ ] Frontend build passes (`npm run build`)
+- **Description**: what changed and why.
+- **Type of change**: feature, bug fix, performance, refactor, documentation, breaking change.
+- **Testing**: which tests were added or updated, and confirmation that the full suite and build pass.
+- **Screenshots**: for any visible UI change.
+- **Checklist**: conventions followed, self-reviewed, no sensitive data, documentation updated, migrations tested.
 
-## Screenshots (if UI changes)
-Attach screenshots or GIFs for Vue component changes.
+See `checklists/pull-request.md` for the full checklist.
 
-## Checklist
-- [ ] Code follows project conventions
-- [ ] Self-reviewed code
-- [ ] No sensitive data in code or logs
-- [ ] Documentation updated
-- [ ] Migration tested (if applicable)
-```
+### PR Size
+
+- Keep PRs small and focused: aim for under **400** changed lines.
+- Split large work into a sequence of reviewable PRs.
+- Self-review the diff before requesting review.
 
 ### PR Requirements
 
 - At least 1 approval from a team member
-- All CI checks passing (tests, lint, build)
+- All CI checks passing (tests, lint, type checks, build)
 - Branch is up to date with main
 - No merge conflicts
-- All tests passing: `./vendor/bin/pest`
-- Frontend build passes: `npm run build`
-- No linting errors: `./vendor/bin/pint --test`
-- No TypeScript errors: `npm run typecheck` (runs `vue-tsc --noEmit`)
+- No unresolved review comments
 
 ## Code Review Guidelines
 
@@ -158,7 +152,7 @@ Attach screenshots or GIFs for Vue component changes.
 
 - Correctness: Does the code do what it says?
 - Security: Any sensitive data leaks, injection risks, or auth bypasses?
-- Performance: N+1 queries, unnecessary re-renders, missing caching?
+- Performance: Repeated queries in loops, unnecessary re-renders, missing caching?
 - Readability: Is the code clear and self-documenting?
 - Test coverage: Are tests adequate? Edge cases covered?
 - Conventions: Does it follow project standards (naming, patterns)?
@@ -168,14 +162,17 @@ Attach screenshots or GIFs for Vue component changes.
 - Be specific: reference exact lines
 - Explain the "why" behind suggestions
 - Use questions for suggestions: "Have you considered...?"
+- Mark optional points clearly (for example, prefix with "nit:")
 - Approve when confident, request changes with clear reasoning
-- Address all requested changes before re-requesting review
+- Authors address all requested changes before re-requesting review
+- Review the code, not the person
 
 ## Merge Strategies
 
 - **Squash merge** for feature branches (clean history on main)
 - **Merge commit** for hotfixes and release branches
 - Never force-push to `main`
+- Delete the branch after merging
 
 ## Tags and Releases
 
@@ -186,5 +183,7 @@ git push origin v1.2.0
 ```
 
 - **MAJOR**: Breaking changes (remove endpoints, change auth flow)
-- **MINOR**: New features (add endpoints, add components)
+- **MINOR**: New features (add endpoints, add screens or components)
 - **PATCH**: Bug fixes and hotfixes
+
+Update the changelog before tagging. See `checklists/release.md`.

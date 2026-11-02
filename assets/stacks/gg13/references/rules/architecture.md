@@ -1,8 +1,10 @@
 # Architecture
 
+> Builds on `references/principles/architecture.md` — read it first. This file covers how to apply it on Laravel 13 + Vue 3.5.
+
 ## Overview
 
-The application follows a **layered architecture** with Laravel handling the API/backend and Vue 3 SPA handling the frontend presentation layer.
+Laravel handles the API/backend and a Vue 3 SPA handles the frontend presentation layer.
 
 ```
 ┌─────────────────────────────────────────────────────────┐
@@ -37,7 +39,7 @@ The application follows a **layered architecture** with Laravel handling the API
 
 ### 1. Presentation Layer (Laravel HTTP)
 
-Controllers are thin. They only:
+Controllers only:
 - Accept Form Request (validated input)
 - Delegate to a Service or Action class
 - Return an API Resource or error response
@@ -65,7 +67,7 @@ class UserController extends Controller
 
 ### 2. Service / Action Layer (Business Logic)
 
-Services contain business logic. For single discrete actions, use Action classes in the `Actions/` directory.
+Single discrete actions go in Action classes in the `Actions/` directory.
 
 ```php
 class CreateUserAction
@@ -128,7 +130,7 @@ class User extends Authenticatable
 
 ### 4. API Resource Layer
 
-Transform models into JSON responses. Never return raw models to the controller.
+Transform models into JSON with `JsonResource` classes.
 
 ```php
 class UserResource extends JsonResource

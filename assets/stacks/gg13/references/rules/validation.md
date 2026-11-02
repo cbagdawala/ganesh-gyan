@@ -1,5 +1,7 @@
 # Validation Standards
 
+> Builds on `references/principles/validation.md` — read it first. This file covers how to apply it on Laravel 13 + Vue 3.5.
+
 ## Form Request Classes
 
 All API endpoints must use Form Request classes. Never validate directly in controllers.
@@ -130,43 +132,11 @@ Use in Form Request:
 
 ## Field-Level vs Form-Level Errors
 
-### Field-Level Errors
-
-Per-field validation failures (most common). Laravel Form Requests return these automatically:
-
-```json
-{
-  "details": {
-    "email": ["The email has already been taken."]
-  }
-}
-```
-
-### Form-Level Errors
-
-Errors that relate to the entire form, not a single field. Return with empty key or use `__form`:
-
-```json
-{
-  "details": {
-    "__form": [
-      "The selected combination of coupon and product is not valid."
-    ]
-  }
-}
-```
-
-Or use a non-field key:
-
-```json
-{
-  "details": {
-    "credentials": [
-      "The provided email or password is incorrect."
-    ]
-  }
-}
-```
+- **Field-level** errors (`details.email`, ...) are returned automatically by
+  Laravel Form Requests.
+- **Form-level** errors go under `__form` (or a descriptive non-field key such
+  as `credentials`). Raise them yourself, e.g.
+  `throw ValidationException::withMessages(['__form' => ['The selected combination of coupon and product is not valid.']])`.
 
 ## Client-Side Validation (Vue)
 
@@ -256,8 +226,7 @@ async function handleSubmit(values: CreateUserFormData) {
 
 ## Rule of Thumb
 
-- **Always** validate on the backend with Form Requests (never trust frontend validation)
-- **Always** validate on the frontend for better UX (but treat it as enhancement, not security)
+- Backend validation = Form Requests; frontend validation = vee-validate + zod
 - Use Laravel's built-in rules when possible
-- Create custom Rule classes for complex business logic validation
-- Provide human-readable error messages in the `messages()` method
+- Custom rules implement `ValidationRule` in `app/Rules/`
+- Human-readable messages go in the Form Request's `messages()` method

@@ -1,5 +1,7 @@
 # Naming Conventions
 
+> Builds on `references/principles/naming.md` — read it first. This file covers how to apply it on Laravel 13 + Vue 3.5.
+
 ## PHP
 
 | Element | Convention | Example |

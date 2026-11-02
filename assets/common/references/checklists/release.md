@@ -1,6 +1,6 @@
 # Release Readiness Checklist
 
-Use this checklist before deploying to production.
+Use this checklist before deploying to production. The exact commands for each step (formatter, linters, test runner, cache warm-up, asset build) are in your stack pack's `references/rules/` and deploy workflow.
 
 ---
 
@@ -10,29 +10,29 @@ Use this checklist before deploying to production.
 
 - [ ] All feature branches merged to `main`
 - [ ] No merge conflicts
-- [ ] `php artisan pint --test` passes (PSR-12)
-- [ ] `npm run lint` passes
-- [ ] `npm run typecheck` passes
-- [ ] No `dd()`, `dump()`, `var_dump()` in code
-- [ ] No `console.log` or `debugger` in Vue files
+- [ ] Backend formatter / style check passes
+- [ ] Frontend linter passes
+- [ ] Type checking / static analysis passes (if the stack uses it)
+- [ ] No debug dumps or leftover debugging output in backend code
+- [ ] No console logging or debugger statements in frontend code
 - [ ] No hardcoded secrets, API keys, or credentials
-- [ ] `.env.example` matches `.env` structure
+- [ ] Example environment file matches the real environment file's keys
 - [ ] No uncommitted changes on `main`
 
 ### Testing
 
-- [ ] All tests passing (`./vendor/bin/pest --parallel`)
+- [ ] All tests passing (full suite, in parallel if supported)
 - [ ] Test coverage > 80% for new code
 - [ ] No failing tests in CI
-- [ ] Feature tests cover all new endpoints
-- [ ] Component tests cover all new Vue components
+- [ ] Feature / integration tests cover all new endpoints
+- [ ] Component tests cover all new UI components
 - [ ] Edge cases tested (empty data, large payloads, invalid input)
 - [ ] Race conditions considered (concurrent updates)
 - [ ] Test database cleaned between runs
 
 ### Database
 
-- [ ] All migrations run on staging (`php artisan migrate --force`)
+- [ ] All migrations run on staging (non-interactive / forced mode)
 - [ ] Migrations are backward compatible (no breaking changes)
 - [ ] Seeded test data matches production structure
 - [ ] Old migrations removed (no stale migrations)
@@ -43,7 +43,7 @@ Use this checklist before deploying to production.
 
 ### Security
 
-- [ ] `APP_KEY` set; `SANCTUM_STATEFUL_DOMAINS` / `SESSION_DOMAIN` correct for the environment
+- [ ] Application encryption key set; session / cookie domains correct for the environment
 - [ ] All API endpoints authenticated
 - [ ] Authorization policies enforced
 - [ ] File uploads validated and scanned
@@ -52,12 +52,12 @@ Use this checklist before deploying to production.
 - [ ] HTTPS enforced
 - [ ] Security headers set (CSP, HSTS, X-Frame-Options)
 - [ ] No sensitive data in logs
-- [ ] Dependencies updated (`composer audit`, `npm audit`)
+- [ ] Dependencies audited with each package manager's audit command
 - [ ] No known vulnerabilities in dependencies
 
 ### Performance
 
-- [ ] No N+1 queries in new code (verified with Telescope/Debugbar)
+- [ ] No N+1 queries in new code (verified with the stack's query profiler / debug toolbar)
 - [ ] Pagination on all list endpoints
 - [ ] Database indexes added for new queries
 - [ ] API response size checked (not too large)
@@ -70,16 +70,16 @@ Use this checklist before deploying to production.
 
 ### Configuration
 
-- [ ] `.env.production` configured
-- [ ] `APP_DEBUG=false` in production
-- [ ] `APP_ENV=production` set
-- [ ] `APP_URL` set correctly
-- [ ] Sanctum config correct (`SANCTUM_STATEFUL_DOMAINS`, `SESSION_DOMAIN`, `SESSION_SECURE_COOKIE`)
+- [ ] Production environment file configured
+- [ ] Debug mode disabled in production
+- [ ] Environment set to production
+- [ ] Application base URL set correctly
+- [ ] Authentication / session config correct (trusted domains, cookie domain, secure cookies)
 - [ ] Database connection configured
-- [ ] Redis/Memcached configured (if used)
-- [ ] Queue driver configured (Redis/SQS/Database)
+- [ ] Cache store configured (if used)
+- [ ] Queue driver configured
 - [ ] Mail driver configured
-- [ ] S3/storage driver configured (if used)
+- [ ] Object / file storage configured (if used)
 - [ ] Third-party API keys configured
 - [ ] Analytics/monitoring configured
 
@@ -89,12 +89,12 @@ Use this checklist before deploying to production.
 - [ ] Deploy script tested on staging
 - [ ] Zero-downtime deployment strategy (blue-green or rolling)
 - [ ] Database migrations run as first deploy step
-- [ ] Cache cleared after deploy (`php artisan cache:clear`)
-- [ ] Config cached (`php artisan config:cache`)
-- [ ] Routes cached (`php artisan route:cache`)
-- [ ] View compiled (`php artisan view:cache`)
+- [ ] Application cache cleared after deploy
+- [ ] Configuration cached (if the framework supports it)
+- [ ] Routes cached (if the framework supports it)
+- [ ] Templates / views precompiled (if the framework supports it)
 - [ ] Queue workers restarted
-- [ ] Frontend assets built (`npm run build`)
+- [ ] Frontend assets built for production
 - [ ] CDN cache purged (if applicable)
 - [ ] SSL certificate valid
 - [ ] Domain DNS propagated
@@ -104,7 +104,7 @@ Use this checklist before deploying to production.
 - [ ] Error tracking configured (Sentry, Logtail, etc.)
 - [ ] Performance monitoring enabled (New Relic, Datadog, etc.)
 - [ ] Uptime monitoring configured
-- [ ] Log aggregation configured
+- [ ] Log aggregation configured (see `references/principles/logging.md`)
 - [ ] Alert thresholds set
 - [ ] API response time alerts
 - [ ] Error rate alerts

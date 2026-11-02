@@ -1,13 +1,15 @@
 # Improve UI - Prompt Template
 
-Use this prompt when you need to improve the UI/UX of a Vue 3 + PrimeVue component or page.
+Use this prompt when you need to improve the UI/UX of a component or page. The component names, theming mechanism and file syntax come from your stack pack's UI rules and design system.
 
 ---
 
 ## Prompt
 
 ```
-You are improving the UI/UX of a Vue 3 + PrimeVue 4 component in a Laravel 13 + Vue 3 + PrimeVue 4 + MySQL + Pest + Sanctum project.
+You are improving the UI/UX of a component in this project. Follow
+`references/principles/ui.md`, the stack pack's `references/design-system/`
+and the stack pack's `references/design-system/`.
 
 ## Target
 
@@ -27,20 +29,21 @@ You are improving the UI/UX of a Vue 3 + PrimeVue 4 component in a Laravel 13 + 
 
 ## Design System Reference
 
-Follow the design system defined in `.ai/design-system/`:
-- `colors.md` - Color palette and usage
-- `typography.md` - Font sizes, weights, line heights
-- `spacing.md` - Padding, margins, gaps
-- `buttons.md` - Button styles, sizes, states
-- `cards.md` - Card layout, shadows, borders
-- `forms.md` - Input styles, validation states
-- `tables.md` - DataTable styling, row heights
-- `badges.md` - Tag/Status badge styles
-- `alerts.md` - Toast/Message styles
-- `dialogs.md` - Dialog/Modal patterns
-- `loading.md` - Skeleton and spinner patterns
-- `empty-states.md` - Empty state illustrations and messages
-- `responsive.md` - Breakpoints and responsive patterns
+Follow the design system in the stack pack's `references/design-system/`.
+Typical topics (use whichever files the pack provides):
+- Colors - palette and usage
+- Typography - font sizes, weights, line heights
+- Spacing - padding, margins, gaps
+- Buttons - styles, sizes, states
+- Cards - layout, shadows, borders
+- Forms - input styles, validation states
+- Tables - data table styling, row heights
+- Badges - tag / status badge styles
+- Alerts - toast / message styles
+- Dialogs - dialog / modal patterns
+- Loading - skeleton and spinner patterns
+- Empty states - illustrations and messages
+- Responsive - breakpoints and responsive patterns
 
 ## UI Improvement Checklist
 
@@ -50,7 +53,7 @@ Follow the design system defined in `.ai/design-system/`:
 - [ ] Consistent typography (heading hierarchy matches spec)
 - [ ] Consistent spacing (uses design system spacing scale)
 - [ ] Consistent border radius, shadows, and borders
-- [ ] PrimeVue theme tokens used instead of custom CSS where possible
+- [ ] UI component library theme tokens used instead of custom CSS where possible
 
 ### 2. Accessibility (WCAG 2.1 AA)
 
@@ -114,37 +117,37 @@ Follow the design system defined in `.ai/design-system/`:
 - [ ] Cancel/back navigation available
 - [ ] Form state preserved on navigation away
 
-## PrimeVue Components Reference
+## UI Component Library Reference
 
-When suggesting improvements, use these PrimeVue components where appropriate:
+When suggesting improvements, prefer the UI component library's built-in
+component for each need below. The stack pack's `references/design-system/`
+(or its design system) maps each need to the exact component name.
 
-| Need | PrimeVue Component |
-|------|-------------------|
-| Data table | DataTable + Column |
-| Dropdown / single-select | Select (v3 `Dropdown` was renamed) |
-| Date picker | DatePicker (v3 `Calendar` was renamed) |
-| File upload | FileUpload |
-| Dialog | Dialog / ConfirmDialog |
-| Notifications | Toast + Message |
-| Loading | ProgressSpinner / ProgressBar |
-| Tags | Tag |
+| Need | Look for |
+|------|----------|
+| Data table | Data table with column definitions, sorting, pagination |
+| Single-select | Select / dropdown |
+| Date picker | Date picker |
+| File upload | File upload with preview |
+| Dialog | Dialog / confirm dialog |
+| Notifications | Toast + inline message |
+| Loading | Spinner / progress bar / skeleton |
+| Tags | Tag / badge |
 | Breadcrumbs | Breadcrumb |
-| Tabs | Tabs / TabList / Tab / TabPanels / TabPanel (v3 `TabView` / `TabPanel` was restructured) |
-| Charts | Chart |
-| Auto-complete | AutoComplete |
-| Multi-select | MultiSelect |
-| Toggle | ToggleSwitch |
+| Tabs | Tabs |
+| Charts | Chart wrapper |
+| Auto-complete | Auto-complete |
+| Multi-select | Multi-select |
+| Toggle | Toggle switch |
 | Rating | Rating |
-| Input number | InputNumber |
+| Input number | Numeric input with locale formatting |
 | Text area | Textarea |
-| Editor | Editor (Quill) |
-| Upload | FileUpload |
-| Menu | Menu / Menubar |
-| Toast | Toast |
+| Editor | Rich text editor |
+| Menu | Menu / menubar |
 | Tooltip | Tooltip |
-| Overlay panel | Popover (v3 `OverlayPanel` was renamed) |
-| Sidebar / off-canvas | Drawer (v3 `Sidebar` was renamed) |
-| Stepper | Stepper / Step |
+| Overlay panel | Popover |
+| Sidebar / off-canvas | Drawer |
+| Stepper | Stepper |
 
 ## Output Format
 
@@ -155,14 +158,10 @@ For each improvement:
 **Component**: `{file_path}`
 
 **Current State**:
-```vue
-{CURRENT_CODE_OR_DESCRIPTION}
-```
+    {CURRENT_CODE_OR_DESCRIPTION}
 
 **Improved State**:
-```vue
-{IMPROVED_CODE}
-```
+    {IMPROVED_CODE}
 
 **Changes Made**:
 - {CHANGE_1}
@@ -174,10 +173,10 @@ For each improvement:
 
 ---
 
-## Example: Improving a DataTable
+## Example: Improving a Data Table
 
 ```
-Improve the ProductListing.vue component.
+Improve the {Module} listing component.
 
 Current issues:
 - No loading skeleton while data loads
@@ -194,7 +193,7 @@ Apply the design system for visual consistency.
 ## Example: Improving a Form
 
 ```
-Improve the {Entity}Form.vue component.
+Improve the {Entity} form component.
 
 Current issues:
 - Validation errors not visible until submit
@@ -203,7 +202,7 @@ Current issues:
 - Mobile form is too wide (no stacking)
 - Required field indicators inconsistent
 
-Apply PrimeVue form validation patterns and the design system.
+Apply the UI component library's form validation patterns and the design system.
 ```
 
 ---

@@ -1,13 +1,15 @@
 # Generate Tests - Prompt Template
 
-Use this prompt when generating Pest test suites for controllers, services, models, or form requests.
+Use this prompt when generating test suites for endpoints, services, models, or validation rules. The test runner, helpers and file layout come from your stack pack's `references/rules/testing.md`.
 
 ---
 
 ## Prompt
 
 ```
-Generate comprehensive Pest tests for the following {TARGET_TYPE} in a Laravel 13 + Vue 3 + PrimeVue 4 + MySQL + Pest + Sanctum project.
+Generate comprehensive tests for the following {TARGET_TYPE} in this project.
+Use the project's test runner and follow `references/principles/testing.md`
+and the stack pack's `references/rules/testing.md`.
 
 ## Target
 
@@ -21,27 +23,27 @@ Generate comprehensive Pest tests for the following {TARGET_TYPE} in a Laravel 1
 
 ### General Rules
 
-1. Use Pest BDD syntax: `describe()` / `it()` blocks
-2. Use `RefreshDatabase` trait for database tests
-3. Use factories for test data (never hardcoded values)
-4. Use Sanctum auth helpers (`Sanctum::actingAs($user)`) for authenticated tests
+1. Use the test runner's grouping syntax (describe/it, test classes, or equivalent)
+2. Reset the database to a clean state for every database test
+3. Use factories / fixtures / builders for test data (never hardcoded rows)
+4. Use the test runner's authentication helper to act as a user for authenticated tests
 5. Cover happy path + error/edge cases
-6. Use specific assertions (not just `assertStatus()`)
-7. Group related tests in `describe()` blocks
-8. Use `beforeEach()` for shared setup
+6. Use specific assertions (not just the status code)
+7. Group related tests together
+8. Use a shared setup hook for common arrangement
 9. Keep tests independent (no test ordering dependencies)
 10. Use descriptive test names that explain the behavior
 
-### Controller Tests
+### Endpoint Tests
 
-For each controller action, test:
+For each endpoint / controller action, test:
 
 1. **Authentication**: Unauthenticated request returns 401
 2. **Authorization**: Unauthorized user returns 403
 3. **Happy path**: Valid request returns expected response
 4. **Validation**: Missing/invalid fields return 422
-5. **Authorization check**: User without permission returns 403
-6. **Side effects**: Verify DB changes (e.g., record created, status updated)
+5. **Permission check**: User without the specific permission returns 403
+6. **Side effects**: Verify persisted changes (e.g., record created, status updated)
 
 ### Service Tests
 
@@ -49,89 +51,61 @@ For each service method, test:
 
 1. **Happy path**: Method returns expected result
 2. **Edge cases**: Empty input, boundary values, null values
-3. **Exception cases**: Invalid input throws expected exception
-4. **Dependencies**: Verify service interacts correctly with dependencies
+3. **Exception cases**: Invalid input raises the expected exception
+4. **Dependencies**: Verify the service interacts correctly with its collaborators
 5. **Business rules**: Domain constraints are enforced
 
-### Form Request Tests
+### Validation Tests
 
-For each form request, test:
+For each validation rule set, test:
 
 1. **Valid input**: Authorizes and passes validation
 2. **Missing required fields**: Fails validation
 3. **Wrong types**: Fails with type mismatch
 4. **Custom rules**: Custom validation rules work correctly
-5. **Authorization**: `authorize()` method logic
+5. **Authorization**: Any authorization logic attached to the request
 
 ### Model Tests
 
 For each model, test:
 
-1. **Fillable attributes**: All expected fields are fillable
-2. **Casts**: Values are cast to correct types
-3. **Relationships**: Relations return correct model instances
-4. **Scopes**: Scopes filter correctly
-5. **Mutators**: Accessors return expected values
+1. **Mass-assignable attributes**: All expected fields can be set, protected ones cannot
+2. **Type conversion**: Values are converted to the correct types
+3. **Relationships**: Relations return the correct related records
+4. **Query filters / scopes**: Filters return the correct subset
+5. **Computed attributes**: Accessors / derived values return expected values
 
 ## Test Structure Template
 
-```php
-<?php
+Translate this pseudocode into the stack's test syntax:
 
-use App\Modules\{Module}\Models\{Model};
-use App\Modules\{Module}\Services\{Service};
-use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Laravel\Sanctum\Sanctum;
+    setup (runs before each test):
+        reset database
+        user = create user via factory
+        service = construct {Service} with its dependencies
 
-uses(RefreshDatabase::class);
+    group "{Entity} endpoints":
 
-beforeEach(function () {
-    // Shared setup
-    $this->user = User::factory()->create();
-    $this->{lowercase_service} = new {Service}(
-        // inject dependencies
-    );
-});
+        test "returns 401 without authentication":
+            response = GET /api/{resource}
+            assert response.status == 401
 
-describe('{Model}Controller', function () {
+        test "returns 403 for a user without permission":
+            other = create user via factory
+            act as other
+            response = {METHOD} /api/{resource}
+            assert response.status == 403
 
-    it('returns unauthorized without a Sanctum token', function () {
-        $response = $this->getJson('/api/{resource}');
-        $response->assertStatus(401);
-    });
-
-    it('returns forbidden for non-authorized user', function () {
-        $otherUser = User::factory()->create();
-
-        Sanctum::actingAs($otherUser);
-        $response = $this->{method}Json('/api/{resource}');
-
-        $response->assertStatus(403);
-    });
-
-    it('{behavior_description}', function () {
-        // Arrange
-        $data = [
-            'field1' => 'value1',
-            'field2' => 123,
-        ];
-
-        // Act
-        Sanctum::actingAs($this->user);
-        $response = $this->{method}Json('/api/{resource}', $data);
-
-        // Assert
-        $response->assertStatus(201)
-            ->assertJsonPath('data.field1', 'value1');
-
-        expect({Model}::first())->toHaveAttributes([
-            'field1' => 'value1',
-            'field2' => 123,
-        ]);
-    });
-});
-```
+        test "{behavior_description}":
+            # Arrange
+            data = { field1: "value1", field2: 123 }
+            # Act
+            act as user
+            response = {METHOD} /api/{resource} with data
+            # Assert
+            assert response.status == 201
+            assert response.json.data.field1 == "value1"
+            assert stored {Entity} has field1 == "value1" and field2 == 123
 
 ## Specific Test Cases for This Module
 
@@ -144,40 +118,36 @@ Based on the {TARGET_TYPE}, generate tests for:
 
 ## Factory Requirements
 
-Ensure factories exist for all models used in tests. Generate them if needed:
+Ensure a factory / fixture exists for every entity used in tests. Generate
+missing ones in the location the stack pack prescribes. Each should produce
+realistic, unique values, for example:
 
-```php
-// Database/Factories/{Model}Factory.php
-use App\Modules\{Module}\Models\{Model};
-
-return [
-    'name' => fn () => fake()->words(2, true),
-    'sku' => fn () => strtoupper(fake()->unique()->words(2, true)),
-    // ...
-];
-```
+    {Entity} factory:
+        name = random words (2)
+        sku  = unique uppercase random words (2)
+        ...
 
 ## Output
 
-Generate complete Pest test files. Do not use placeholders or TODOs.
-Each file should be self-contained and runnable.
+Generate complete test files in the stack's test syntax. Do not use
+placeholders or TODOs. Each file should be self-contained and runnable.
 ```
 
 ---
 
-## Example: Testing a Controller
+## Example: Testing an Endpoint Group
 
 ```
-Generate Pest tests for the ProductController in the Products module.
+Generate tests for the product endpoints in the Products module.
 
-Controller actions:
+Endpoints:
 - GET /api/products (list with pagination, filtering, sorting)
 - POST /api/products (create with validation)
 - GET /api/products/{id} (show with relationships)
 - PATCH /api/products/{id} (update with validation)
 - DELETE /api/products/{id} (soft delete)
 
-Product model: name, sku, price, category_id, status, warehouse_id
+Product fields: name, sku, price, category_id, status, warehouse_id
 
 Generate tests for:
 1. All CRUD operations
@@ -192,12 +162,12 @@ Generate tests for:
 ## Example: Testing a Service
 
 ```
-Generate Pest tests for the StockAdjustmentService.
+Generate tests for the StockAdjustmentService.
 
 Service methods:
-- create(Product, quantity, type, reason, User): StockAdjustment
-- bulkCreate(array, User): Collection
-- list(array filters, array sort, array pagination): Paginator
+- create(product, quantity, type, reason, user) -> StockAdjustment
+- bulkCreate(items, user) -> list of StockAdjustment
+- list(filters, sort, pagination) -> paginated result
 
 Business rules:
 - Cannot remove more stock than available

@@ -1,6 +1,6 @@
 ---
 name: gg13
-version: 1.3.3
+version: 1.4.0
 description: >-
   Use when building or modifying a Laravel 13 + Vue 3.5 + PrimeVue 4 + Sanctum
   application that follows the Divaa conventions — creating CRUD modules, API
@@ -35,7 +35,7 @@ that match the task, not the whole corpus.
 
 ## How to use this skill
 
-1. **Ground yourself in `references/rules/`** — coding standards, architecture, Laravel/Vue conventions, security. Read the specific rule for the area you're touching.
+1. **Ground yourself in `references/principles/` + `references/rules/`** — for the area you're touching, `principles/<topic>.md` gives the stack-neutral rule and `rules/<topic>.md` the Laravel/Vue way to apply it (rules win where they are more specific).
 2. **Follow a `references/blueprints/` template** when building a page/component.
 3. **Follow a `references/skills/` guide** to generate a specific artifact (controller, resource, policy, job…).
 4. **Follow a `references/workflows/` process** for end-to-end features.
@@ -67,6 +67,9 @@ that match the task, not the whole corpus.
 
 ### Build a page/component — `references/blueprints/`
 `listing`, `crud-form`, `modal-form`, `detail-page`, `dashboard`, `wizard`, `settings-page`, `reports`, `login`, `profile`, `timeline` → `references/blueprints/<name>.md`
+
+### Stack-neutral principles — `references/principles/`
+`architecture`, `authorization`, `coding-standards`, `documentation`, `git`, `logging`, `naming`, `performance`, `security`, `testing`, `validation`, `ui` → `references/principles/<name>.md` (read with the matching rule below)
 
 ### Foundational rules — `references/rules/`
 `project`, `coding-standards`, `architecture`, `laravel`, `vue`, `api`, `database`, `naming`, `validation`, `authorization`, `testing`, `performance`, `security`, `logging`, `git`, `documentation` → `references/rules/<name>.md`

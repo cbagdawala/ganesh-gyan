@@ -1,19 +1,14 @@
 # Security Practices
 
+> Builds on `references/principles/security.md` — read it first. This file covers how to apply it on Laravel 13 + Vue 3.5.
+
 ## Authentication Token Security (Laravel Sanctum)
 
 ### First-party SPA: session cookies
 
-The Vue SPA authenticates via Sanctum's stateful, cookie-based session guard.
-This is the most secure option for a browser SPA because credentials never
-touch JavaScript:
-
-- The session lives in an `httpOnly` cookie, so it is **not readable by
-  JavaScript** and cannot be exfiltrated via XSS.
-- **Do not store auth tokens in `localStorage`** — anything in `localStorage`
-  is readable by any script on the page and is a prime XSS target. The
-  `httpOnly` + `SameSite` cookie is strictly preferable.
-- Configure the session cookie in `config/session.php`:
+The Vue SPA authenticates via Sanctum's stateful, cookie-based session guard
+(session in an `httpOnly` cookie; never auth tokens in `localStorage`).
+Configure the session cookie in `config/session.php`:
 
 ```env
 # .env
@@ -25,14 +20,9 @@ SESSION_HTTP_ONLY=true        # cookie not exposed to JavaScript
 SANCTUM_STATEFUL_DOMAINS=app.example.com
 ```
 
-### Best practices
-
-- Prefer the session-cookie SPA guard over API tokens for browser clients.
-- Set `SESSION_SECURE_COOKIE=true`, `SESSION_HTTP_ONLY=true`, and an
-  appropriate `SESSION_SAME_SITE` value.
-- For issued API tokens (mobile/third-party), scope tokens to the minimum
-  abilities and revoke on logout; optionally set `sanctum.expiration`.
-- Rotate credentials and invalidate sessions on security incidents.
+- Use the session-cookie SPA guard, not API tokens, for the browser client.
+- For issued API tokens, scope abilities minimally, revoke on logout, and
+  optionally set `sanctum.expiration`.
 
 ### Third-party / mobile: API tokens
 
@@ -147,8 +137,7 @@ Route::post('upload')->middleware('throttle:upload');
   `{{ }}` and Vue `{{ }}` both HTML-escape) and uses parameter binding to
   prevent SQL injection — but incoming request data is stored as-is. Validate
   and, where relevant, normalize input yourself.
-- Validate every field with Form Requests; reject unexpected shapes rather than
-  trying to "clean" them.
+- Validate every field with Form Requests.
 - Use `Str::slug()` for URL-safe strings.
 - Rely on Blade's `{{ }}` / Vue's `{{ }}` for output escaping; sanitize HTML
   destined for `v-html` with DOMPurify (see below).
@@ -273,7 +262,7 @@ class SecurityHeadersMiddleware
 
 ### Password Hashing
 
-Always use Laravel's built-in hashing — never roll your own:
+Use Laravel's built-in hashing via the `hashed` cast:
 
 ```php
 // Automatic with $fillable and 'password' => 'hashed' cast
@@ -287,9 +276,8 @@ protected function casts(): array
 
 ### Environment Security
 
-- Never commit `.env` to version control
-- Use different `.env` values per environment
+- Never commit `.env`; use different `.env` values per environment
 - Rotate `APP_KEY` regularly (note: rotating it invalidates existing encrypted
   session cookies and Sanctum sessions, forcing re-authentication)
-- Use secrets management (AWS Secrets Manager, HashiCorp Vault) in production
-- Validate environment variables exist in CI/CD pipeline
+- In production, source secrets from a manager (AWS Secrets Manager, HashiCorp
+  Vault) rather than a hand-edited `.env`

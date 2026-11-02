@@ -1,10 +1,12 @@
 # Performance Optimization
 
+> Builds on `references/principles/performance.md` — read it first. This file covers how to apply it on Laravel 13 + Vue 3.5.
+
 ## Eager Loading Relationships
 
 ### Avoid N+1 Queries
 
-Always eager load relationships that will be used in the response. Use `with()` for explicit loading and `$with` for default loading.
+Use `with()` for explicit loading and `$with` for default loading.
 
 ```php
 // Bad — N+1 query problem
@@ -19,7 +21,7 @@ $users = User::with('profile')->get();
 
 ### Using with() Selectively
 
-Only eager load what you need. Use `with()` with column selection when possible:
+Use `with()` with column selection when possible:
 
 ```php
 // Good — selective eager loading with columns.
@@ -219,9 +221,7 @@ $table->index(['user_id', 'status', 'created_at']);
 
 ### Avoid Over-Indexing
 
-- Each index adds write overhead (INSERT, UPDATE, DELETE)
-- Only index columns used in WHERE, JOIN, ORDER BY
-- Monitor slow queries with Laravel's query log or Telescope
+Monitor slow queries with Laravel's query log or Telescope before adding an index.
 
 ## API Response Caching
 
@@ -354,8 +354,6 @@ return [
 
 ## General Guidelines
 
-1. **Profile before optimizing** — Use Laravel Telescope to identify bottlenecks
-2. **Cache reads, invalidate writes** — Never cache without invalidation
-3. **Lazy load what you can** — Defer non-critical component loading
-4. **Use appropriate data structures** — Collections over raw arrays where beneficial
-5. **Monitor** — Set up Query Monitor or Telescope for ongoing performance tracking
+1. **Profile with Laravel Telescope** to identify bottlenecks before optimizing
+2. **Use Collections** over raw arrays where beneficial
+3. **Monitor** with Query Monitor or Telescope for ongoing performance tracking

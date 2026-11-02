@@ -1,13 +1,15 @@
 # Write Documentation - Prompt Template
 
-Use this prompt when generating API documentation, code documentation, or user-facing documentation.
+Use this prompt when generating API documentation, code documentation, or user-facing documentation. Stack-specific doc conventions (doc-comment syntax, setup commands) live in your stack pack's `references/rules/documentation.md`.
 
 ---
 
 ## Prompt
 
 ```
-You are writing documentation for a Laravel 13 + Vue 3 + PrimeVue 4 + MySQL + Pest + Sanctum project.
+You are writing documentation for this project. Follow
+`references/principles/documentation.md` and the stack pack's
+`references/rules/documentation.md`.
 
 ## Documentation Target
 
@@ -32,7 +34,7 @@ For each endpoint, document:
 
 **Summary**: One-line description of what this endpoint does.
 
-**Authentication**: Required / Optional (Sanctum Bearer token)
+**Authentication**: Required / Optional (state the scheme, e.g. Bearer token or session cookie)
 
 **Authorization**: Required permission (e.g., `products.viewAny`, `products.create`)
 
@@ -102,20 +104,15 @@ For each endpoint, document:
 }
 ```
 
-**Pest Test Example**:
-```php
-it('returns paginated products', function () {
-    Product::factory()->count(5)->create();
+**Test Example** (pseudocode; write it in the stack's test syntax):
 
-    Sanctum::actingAs($this->user);
-    $response = $this->getJson('/api/products');
-
-    $response->assertStatus(200)
-        ->assertJsonStructure([
-            'success', 'message', 'data' => ['data' => [], 'meta' => [], 'links' => []],
-        ]);
-});
-```
+    test "returns paginated products":
+        create 5 products via factory
+        act as user
+        response = GET /api/products
+        assert response.status == 200
+        assert response.json has keys: success, message,
+            data.data, data.meta, data.links
 
 ### Code Documentation Format
 
@@ -127,7 +124,7 @@ For each class/method, document:
 4. **Returns**: Return type and description
 5. **Exceptions**: What exceptions it may throw
 6. **Side Effects**: What it modifies (DB, cache, external APIs)
-7. **Dependencies**: What it depends on (DI services)
+7. **Dependencies**: What it depends on (injected services)
 
 ### Architecture Documentation Format
 
@@ -180,7 +177,7 @@ Document the StockAdjustmentService for the Inventory module.
 Document:
 1. Service purpose and responsibilities
 2. Each public method with parameters, return type, exceptions
-3. Example usage from controller
+3. Example usage from an endpoint handler
 4. Database operations performed
 5. Relationships to other services (AuditLogService, StockMovementService)
 6. Business rules enforced
@@ -194,13 +191,13 @@ Document:
 Write a setup guide for developers getting started with the project.
 
 Include:
-1. Prerequisites (PHP, Node, MySQL, Composer, NPM)
-2. Clone and install dependencies
-3. Environment configuration (.env.example -> .env)
-4. Database setup (migrate, seed)
-5. Sanctum configuration
+1. Prerequisites (language runtimes, database server, package managers - see the stack pack)
+2. Clone and install backend and frontend dependencies
+3. Environment configuration (copy the example env file and fill it in)
+4. Database setup (run migrations, seed data)
+5. Authentication configuration
 6. Running the development server (backend + frontend)
-7. Running tests (Pest)
+7. Running tests (the project's test runner)
 8. Common troubleshooting
 9. Project structure overview
 ```

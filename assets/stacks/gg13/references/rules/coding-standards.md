@@ -1,11 +1,6 @@
 # Coding Standards
 
-## Principles
-
-- **SOLID** — Single Responsibility, Open/Closed, Liskov Substitution, Interface Segregation, Dependency Inversion
-- **DRY** — Do Not Repeat Yourself
-- **KISS** — Keep It Simple, Stupid
-- **YAGNI** — You Aren't Gonna Need It
+> Builds on `references/principles/coding-standards.md` — read it first. This file covers how to apply it on Laravel 13 + Vue 3.5.
 
 ## PHP Standards
 
@@ -201,7 +196,7 @@ app/
 
 ### Single Responsibility
 
-Each class, method, and file should do one thing:
+How the principle maps onto Laravel classes:
 
 - **Controller**: Parse request, delegate to service, return response
 - **Service/Action**: Business logic

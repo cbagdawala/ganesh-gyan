@@ -1,5 +1,7 @@
 # Documentation Standards
 
+> Builds on `references/principles/documentation.md` — read it first. This file covers how to apply it on Laravel 13 + Vue 3.5.
+
 ## PHP Documentation (PHPDoc)
 
 All public classes, methods, and properties must have PHPDoc annotations.
@@ -210,14 +212,8 @@ When using PrimeVue components, document which components and their key props:
 
 ## README Updates
 
-### When to Update README
-
-- Adding new environment variables
-- Changing database schema (new migrations)
-- Adding new API endpoints or changing existing ones
-- Installing new packages or changing dependencies
-- Updating build/deploy instructions
-- Adding new development setup steps
+When to update the README is covered in the principles file. A Laravel 13 + Vue
+project README follows this structure:
 
 ### README Structure
 
@@ -302,22 +298,9 @@ All notable changes to this project will be documented in this file.
 - Email notification for order status changes
 ```
 
-### Rules
-
-- Keep the `[Unreleased]` section at the top
-- Add entries under the appropriate category: Added, Changed, Fixed, Deprecated, Removed
-- Reference issue/PR numbers where applicable: `Fixed #123: login redirect loop`
-- Update the changelog before every release tag
-- Follow [Keep a Changelog](https://keepachangelog.com/) format
-
 ## Documentation Review
 
-### When to Review Documentation
-
-- Before merging a PR that changes functionality
-- Before every release
-- When adding new environment variables
-- When changing API contracts
+Review documentation at the points listed in the principles file, using this checklist:
 
 ### Documentation Checklist
 

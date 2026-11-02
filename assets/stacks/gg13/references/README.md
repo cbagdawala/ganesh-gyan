@@ -23,7 +23,12 @@ This directory contains the complete AI ruleset for the **Laravel 13 + Vue 3 + P
 .ai/
 ├── README.md                       # You are here
 │
-├── rules/                          # Foundational coding rules
+├── principles/                     # Stack-neutral principles (shared by every pack)
+│   ├── architecture.md · authorization.md · coding-standards.md
+│   ├── documentation.md · git.md · logging.md · naming.md
+│   └── performance.md · security.md · testing.md · validation.md · ui.md
+│
+├── rules/                          # Laravel 13 + Vue 3.5 rules (addenda to principles/)
 │   ├── project.md                  # Tech stack and project overview
 │   ├── coding-standards.md         # SOLID, DRY, KISS, YAGNI
 │   ├── architecture.md             # Overall architecture
@@ -161,7 +166,7 @@ This directory contains the complete AI ruleset for the **Laravel 13 + Vue 3 + P
 
 ## How to Use
 
-1. **Start with rules/** - Read the foundational rules for coding standards and architecture
+1. **Start with principles/ + rules/** - `principles/<topic>.md` states the stack-neutral rule; `rules/<topic>.md` shows how to apply it on this stack (read both for security, authorization, validation, logging, performance, testing, naming, architecture, coding-standards, documentation, git)
 2. **Use blueprints/** - Follow templates when creating new pages/components
 3. **Use skills/** - Follow step-by-step guides when generating specific code artifacts
 4. **Use workflows/** - Follow end-to-end processes for complex features

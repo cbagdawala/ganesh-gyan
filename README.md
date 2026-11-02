@@ -129,9 +129,10 @@ gg uninstall                 # detect installs of any pack in the current projec
 
 ## What's inside a pack
 
-A thin `SKILL.md` router over ~116 documents (loaded on demand). For `gg13`:
+A thin `SKILL.md` router over ~129 documents (loaded on demand). For `gg13`:
 
-- **rules/** — coding standards, architecture, Laravel/Vue conventions, security, testing
+- **principles/** — stack-neutral principles shared by every pack (security, validation, testing, architecture…)
+- **rules/** — how this stack applies them: Laravel/Vue conventions, coding standards, security, testing
 - **blueprints/** — page/component templates (listing, crud-form, dashboard, login…)
 - **skills/** — step-by-step generators (create-module, create-api, create-policy…)
 - **workflows/** — end-to-end processes (implement-crud, authentication, permissions…)
@@ -145,6 +146,8 @@ Conventions baked in: Laravel Sanctum auth, the Laravel 11+ slim skeleton, Prime
 ```
 assets/
   common/      # stack-neutral intelligence, merged into every install
+               #   principles/ (rule principles), prompts/, checklists/ — no
+               #   framework names allowed (enforced by `npm run lint:skill`)
   stacks/
     gg13/      # one folder per stack pack (SKILL.md + references/)
 ```

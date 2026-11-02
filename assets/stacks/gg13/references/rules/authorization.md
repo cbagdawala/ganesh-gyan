@@ -1,8 +1,10 @@
 # Authorization
 
+> Builds on `references/principles/authorization.md` — read it first. This file covers how to apply it on Laravel 13 + Vue 3.5.
+
 ## Laravel Policies
 
-Every model requiring authorization must have a corresponding Policy class.
+Every model requiring authorization has a Policy class (one method per action).
 
 ### Policy Structure
 
@@ -224,11 +226,9 @@ public function update(UpdateOrderRequest $request, Order $order): UpdateOrderRe
 ## Permission Caching
 
 spatie/laravel-permission already caches the permission/role definitions
-internally. Do **not** try to prime a per-user cache in a provider's `boot()`
-method — `boot()` runs during application bootstrap, before any request user is
-resolved, so `auth()->id()` is `null` there. Cache a user's effective
-permissions lazily, at the point you actually need them (e.g. in a service or
-when building the auth payload for the SPA):
+internally. Do **not** prime a per-user cache in a provider's `boot()` method —
+no request user is resolved yet, so `auth()->id()` is `null` there. Cache
+lazily, e.g. in a service or when building the auth payload for the SPA:
 
 ```php
 // e.g. in an AuthService, during a request

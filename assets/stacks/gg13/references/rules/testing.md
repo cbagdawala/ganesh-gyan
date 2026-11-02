@@ -1,5 +1,7 @@
 # Testing Standards (Pest)
 
+> Builds on `references/principles/testing.md` — read it first. This file covers how to apply it on Laravel 13 + Vue 3.5.
+
 ## Pest Configuration
 
 Pest is the primary testing framework. PHPUnit is used only as a fallback.
@@ -274,7 +276,7 @@ Use `RefreshDatabase` trait (Pest-compatible):
 uses(RefreshDatabase::class);
 ```
 
-This wraps each test in a transaction and rolls back after the test, keeping the database clean.
+This wraps each test in a transaction and rolls it back afterwards.
 
 For tests that use queues, use `DatabaseMigrations` instead:
 
@@ -346,7 +348,7 @@ it('handles payment gateway timeout gracefully', function () {
 
 ### Feature Tests
 
-Use `it_can_*`, `it_returns_*`, `it_throws_*`, `it_does_not_*` pattern:
+Pest form of the `can` / `returns` / `throws` / `does not` patterns:
 
 ```php
 it('can list users when authenticated')
@@ -361,7 +363,6 @@ it('returns 403 when user lacks permission')
 
 ### Unit Tests
 
-Use descriptive past-tense or present-tense:
 
 ```php
 it('creates a user with valid data')
@@ -407,10 +408,6 @@ Notification::assertCount(2)
 
 ## Coverage
 
-Run tests with coverage:
-
 ```bash
 ./vendor/bin/pest --coverage
 ```
-
-Aim for >80% coverage on critical paths (auth, billing, data mutations).
