@@ -418,6 +418,8 @@ export const useUserStore = defineStore('user', () => {
 
 Client-side routing with lazy-loaded routes.
 
+The layout component mounted for authenticated routes (`MainLayout.vue` below) comes from the active layout — see `../layouts/<layout>/shell.md`.
+
 ```typescript
 // resources/js/router/index.ts
 import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router'

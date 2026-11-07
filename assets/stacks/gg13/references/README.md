@@ -46,10 +46,15 @@ This directory contains the complete AI ruleset for the **Laravel 13 + Vue 3 + P
 │   ├── git.md                      # Branching & commits
 │   └── documentation.md            # Documentation expectations
 │
-├── design-system/                  # UI design system tokens
-│   ├── colors.md
-│   ├── typography.md
-│   ├── spacing.md
+├── layouts/                        # One folder per layout; the project picks one
+│   ├── README.md                   # How the active layout is chosen + precedence
+│   └── classic/                    # Default layout
+│       ├── shell.md                # Layout component, sidebar/topbar, navigation
+│       ├── colors.md
+│       ├── typography.md
+│       └── spacing.md
+│
+├── design-system/                  # Shared PrimeVue component guidance (all layouts)
 │   ├── icons.md
 │   ├── buttons.md
 │   ├── cards.md

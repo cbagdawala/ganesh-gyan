@@ -27,10 +27,13 @@ You are improving the UI/UX of a Vue 3 + PrimeVue 4 component in a Laravel 13 + 
 
 ## Design System Reference
 
-Follow the design system defined in `.ai/design-system/`:
+Follow the active layout in `layouts/<layout>/` (see `layouts/README.md`; default `classic`):
+- `shell.md` - App frame, sidebar/topbar, navigation
 - `colors.md` - Color palette and usage
 - `typography.md` - Font sizes, weights, line heights
 - `spacing.md` - Padding, margins, gaps
+
+And the shared component guidance in `design-system/`:
 - `buttons.md` - Button styles, sizes, states
 - `cards.md` - Card layout, shadows, borders
 - `forms.md` - Input styles, validation states

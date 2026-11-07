@@ -39,7 +39,7 @@ that match the task, not the whole corpus.
 2. **Follow a `references/blueprints/` template** when building a page/component.
 3. **Follow a `references/skills/` guide** to generate a specific artifact (controller, resource, policy, job…).
 4. **Follow a `references/workflows/` process** for end-to-end features.
-5. **Match `references/design-system/`** for any PrimeVue 4 UI.
+5. **For any UI, resolve the active layout first** (`references/layouts/README.md`: `gg13-layout:` line in the project's agent file → fingerprint → default `classic`), then read `references/layouts/<layout>/shell.md` + its design values, and match `references/design-system/` for PrimeVue 4 components. Layout files win over shared ones.
 6. **Verify with `references/checklists/`** before calling work done.
 7. **Consult `references/decisions/` (ADRs)** for the "why" behind choices (esp. ADR-002 = Sanctum).
 
@@ -59,6 +59,7 @@ that match the task, not the whole corpus.
 | Search | `references/workflows/implement-search.md` |
 | Soft delete · audit log | `references/workflows/implement-soft-delete.md` · `references/workflows/implement-audit-log.md` |
 | Dashboard · reports | `references/workflows/create-dashboard.md` · `references/workflows/create-report.md` |
+| App shell · theme · which layout | `references/layouts/README.md` → `references/layouts/<layout>/shell.md` |
 | Optimize performance | `references/workflows/optimize-performance.md` |
 | Refactor · bug fix · review · release | `references/workflows/refactor-module.md` · `bug-fixing.md` · `code-review.md` · `release-checklist.md` |
 
@@ -74,8 +75,11 @@ that match the task, not the whole corpus.
 ### Foundational rules — `references/rules/`
 `project`, `coding-standards`, `architecture`, `laravel`, `vue`, `api`, `database`, `naming`, `validation`, `authorization`, `testing`, `performance`, `security`, `logging`, `git`, `documentation` → `references/rules/<name>.md`
 
-### PrimeVue 4 UI — `references/design-system/`
-`colors`, `typography`, `spacing`, `icons`, `buttons`, `cards`, `forms`, `tables`, `badges`, `alerts`, `dialogs`, `drawers`, `tabs`, `charts`, `breadcrumbs`, `loading`, `empty-states`, `responsive` → `references/design-system/<name>.md`
+### Layouts — `references/layouts/`
+`classic` (default) → `references/layouts/<layout>/{shell,colors,typography,spacing}.md` · selection rules + precedence in `references/layouts/README.md`
+
+### PrimeVue 4 UI — `references/design-system/` (shared by all layouts)
+`icons`, `buttons`, `cards`, `forms`, `tables`, `badges`, `alerts`, `dialogs`, `drawers`, `tabs`, `charts`, `breadcrumbs`, `loading`, `empty-states`, `responsive` → `references/design-system/<name>.md`
 
 ### Reference implementations — `references/examples/`
 `good-controller`, `good-service`, `good-component`, `good-form`, `api-response`, `migration` → `references/examples/<name>.md`

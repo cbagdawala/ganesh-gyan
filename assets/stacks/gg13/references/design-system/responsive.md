@@ -53,41 +53,7 @@ These are the **Tailwind CSS 4 default** breakpoints. (Note: Tailwind has no `xx
 
 ## Layout Shifts
 
-### Navigation
-
-#### Mobile: Hamburger Menu
-
-```html
-<!-- Mobile -->
-<div class="md:hidden">
-  <Button icon="pi pi-bars" plain @click="mobileMenuOpen = true" />
-  <Drawer v-model:visible="mobileMenuOpen" position="left" :style="{ width: '280px' }">
-    <NavMenu />
-  </Drawer>
-</div>
-
-<!-- Desktop -->
-<div class="hidden md:flex">
-  <NavMenu />
-</div>
-```
-
-- Mobile: hamburger icon opens drawer.
-- Desktop: horizontal navigation bar.
-
-#### Tablet: Collapsed Sidebar
-
-```html
-<div class="hidden lg:flex lg:w-64">
-  <Sidebar />
-</div>
-<div class="hidden lg:block lg:w-64" v-if="sidebarCollapsed">
-  <Sidebar :collapsed="true" />
-</div>
-```
-
-- Tablet: full sidebar.
-- Desktop: collapsible sidebar (icons only).
+App-shell navigation (hamburger drawer, sidebar collapse) depends on the active layout: see `../layouts/<layout>/shell.md` (default `../layouts/classic/shell.md`).
 
 ### Grid Layouts
 
