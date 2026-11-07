@@ -86,6 +86,47 @@ Each install is self-contained: `SKILL.md` plus the merged `references/` corpus
   whichever order the installs were made. Keep a single copy, or update all of
   them together.
 
+## gg13 layouts
+
+The gg13 pack ships more than one UI **layout**: the app shell (layout
+component, sidebar, topbar, navigation), the design values (colors,
+typography, spacing, PrimeVue preset) and the page markup for listings, forms
+and detail pages. Everything else (API, services, policies, tests) is the same
+for every layout.
+
+| Layout | Look |
+|---|---|
+| `classic` (default) | The original gg13 layout: `MainLayout.vue` with sidebar and header, blue primary palette, Inter |
+| `d1` | Compact "Noir" layout: 220px sidebar and 48px topbar, zinc monochrome PrimeVue preset, 14px density, JetBrains Mono for numbers; `ListPage` (cards / table / split view), `FormPage` (numbered sections, sticky action bar) and `DocumentPanel` page components |
+
+**Choosing a layout for a project.** Add one line to the project's `CLAUDE.md`
+or `AGENTS.md`:
+
+```
+gg13-layout: d1
+```
+
+Then ask as usual, e.g. *"build a products module following gg13"*: the
+listing, form and detail pages come out in the d1 layout. Without the line, the
+skill recognises the layout from the project's files, and a new or unrecognised
+project gets `classic`. Existing projects are unaffected until you add the line.
+
+**Switching an existing project.** Ask *"migrate this project from the classic
+layout to d1 following gg13"*. The skill follows
+`references/workflows/migrate-layout.md`: design values first, then the shell,
+then one module's pages at a time, with a checklist at the end. Only frontend
+files change.
+
+**Where the files are.** In the installed pack (e.g.
+`.claude/skills/gg13/references/`):
+
+- `layouts/README.md`: how the layout is chosen, and which files win
+- `layouts/classic/`: `shell.md`, `colors.md`, `typography.md`, `spacing.md`
+- `layouts/d1/`: the same four, plus `navigation.md`, `components.md` and
+  `blueprints/` (`listing`, `crud-form`, `detail-page`, `login`)
+
+A new layout is a new folder under `layouts/`; no CLI change is needed.
+
 ## Linked installs (`--link`)
 
 `init --link` makes the project skill folder a **symlink to the global install**

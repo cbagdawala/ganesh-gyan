@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.5.2 — 2026-11-07
+
+- **README: new "gg13 layouts" section.** Covers the two layouts (`classic`,
+  `d1`), choosing one with a `gg13-layout:` line, switching an existing project,
+  and where the layout files are. No pack content changed.
+
 ## 1.5.1 — 2026-11-07
 
 - **Donate link.** The README (and so the npm page) shows a PayPal "Donate"
