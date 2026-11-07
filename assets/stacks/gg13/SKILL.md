@@ -1,6 +1,6 @@
 ---
 name: gg13
-version: 1.4.0
+version: 1.5.0
 description: >-
   Use when building or modifying a Laravel 13 + Vue 3.5 + PrimeVue 4 + Sanctum
   application that follows the Divaa conventions — creating CRUD modules, API
@@ -8,7 +8,8 @@ description: >-
   Pest tests, or PrimeVue 4 UI (listings, forms, dashboards, dialogs). Routes the
   request to the matching rule, blueprint, workflow, skill guide, design-system,
   example, checklist, or ADR under references/. Also covers Sanctum auth, spatie
-  permissions, import/export, search, soft-delete, and audit logging.
+  permissions, import/export, search, soft-delete, and audit logging, and two UI
+  layouts (classic, d1) selected per project.
   Triggers: "/gg13", "/ganesh-gyan", "follow gg13", "build a module", "create a
   CRUD/listing/form/dashboard", "add an API endpoint/resource", "add a migration",
   "write Pest tests", "PrimeVue 4 component".
@@ -60,6 +61,7 @@ that match the task, not the whole corpus.
 | Soft delete · audit log | `references/workflows/implement-soft-delete.md` · `references/workflows/implement-audit-log.md` |
 | Dashboard · reports | `references/workflows/create-dashboard.md` · `references/workflows/create-report.md` |
 | App shell · theme · which layout | `references/layouts/README.md` → `references/layouts/<layout>/shell.md` |
+| Switch a project's layout (classic → d1) | `references/workflows/migrate-layout.md` |
 | Optimize performance | `references/workflows/optimize-performance.md` |
 | Refactor · bug fix · review · release | `references/workflows/refactor-module.md` · `bug-fixing.md` · `code-review.md` · `release-checklist.md` |
 
@@ -76,7 +78,7 @@ that match the task, not the whole corpus.
 `project`, `coding-standards`, `architecture`, `laravel`, `vue`, `api`, `database`, `naming`, `validation`, `authorization`, `testing`, `performance`, `security`, `logging`, `git`, `documentation` → `references/rules/<name>.md`
 
 ### Layouts — `references/layouts/`
-`classic` (default) → `references/layouts/<layout>/{shell,colors,typography,spacing}.md` · selection rules + precedence in `references/layouts/README.md`
+`classic` (default), `d1` → `references/layouts/<layout>/{shell,colors,typography,spacing}.md`; d1 adds `navigation.md`, `components.md` and `blueprints/{listing,crud-form,detail-page,login}.md` (these override the shared blueprints' markup) · selection rules + precedence in `references/layouts/README.md`
 
 ### PrimeVue 4 UI — `references/design-system/` (shared by all layouts)
 `icons`, `buttons`, `cards`, `forms`, `tables`, `badges`, `alerts`, `dialogs`, `drawers`, `tabs`, `charts`, `breadcrumbs`, `loading`, `empty-states`, `responsive` → `references/design-system/<name>.md`

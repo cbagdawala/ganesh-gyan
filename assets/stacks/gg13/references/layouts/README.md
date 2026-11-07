@@ -9,13 +9,16 @@ guidance in `design-system/` — is shared by every layout.
 | Layout | Folder | Summary |
 |---|---|---|
 | `classic` (default) | `classic/` | The original gg13 layout: `MainLayout.vue`, sidebar + header, blue primary palette, Inter |
+| `d1` | `d1/` | Compact "Noir" layout: `meta.layout` registry, 220px sidebar + 48px topbar, zinc monochrome preset, 14px root, `ListPage` / `FormPage` / `DocumentPanel` page shells |
+
+Switching an existing project from one layout to another: `../workflows/migrate-layout.md`.
 
 ## Which layout is active
 
 Work this out once per task, before any UI work:
 
 1. **Declared.** The project's `CLAUDE.md` / `AGENTS.md` (or another agent
-   instructions file) contains a line `gg13-layout: <id>`. Use it.
+   instructions file) contains a line `gg13-layout: <id>` (e.g. `gg13-layout: d1`). Use it.
 2. **Detected.** No declaration: look for the fingerprint listed in each layout's
    `shell.md` ("How to recognise this layout"). Use the one that matches.
 3. **Default.** Nothing declared or detected (e.g. a new project): use `classic`.

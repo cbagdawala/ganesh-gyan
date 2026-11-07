@@ -48,11 +48,15 @@ This directory contains the complete AI ruleset for the **Laravel 13 + Vue 3 + P
 │
 ├── layouts/                        # One folder per layout; the project picks one
 │   ├── README.md                   # How the active layout is chosen + precedence
-│   └── classic/                    # Default layout
-│       ├── shell.md                # Layout component, sidebar/topbar, navigation
-│       ├── colors.md
-│       ├── typography.md
-│       └── spacing.md
+│   ├── classic/                    # Default layout
+│   │   ├── shell.md                # Layout component, sidebar/topbar, navigation
+│   │   ├── colors.md
+│   │   ├── typography.md
+│   │   └── spacing.md
+│   └── d1/                         # Compact "Noir" layout (gg13-layout: d1)
+│       ├── shell.md · navigation.md · components.md
+│       ├── colors.md · typography.md · spacing.md
+│       └── blueprints/             # listing, crud-form, detail-page, login (override shared markup)
 │
 ├── design-system/                  # Shared PrimeVue component guidance (all layouts)
 │   ├── icons.md
@@ -128,6 +132,7 @@ This directory contains the complete AI ruleset for the **Laravel 13 + Vue 3 + P
 │   ├── bug-fixing.md
 │   ├── code-review.md
 │   ├── release-checklist.md
+│   ├── migrate-layout.md
 │   └── documentation-update.md
 │
 ├── modules/                        # Existing module definitions

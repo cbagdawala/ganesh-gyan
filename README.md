@@ -129,14 +129,15 @@ gg uninstall                 # detect installs of any pack in the current projec
 
 ## What's inside a pack
 
-A thin `SKILL.md` router over ~129 documents (loaded on demand). For `gg13`:
+A thin `SKILL.md` router over ~142 documents (loaded on demand). For `gg13`:
 
 - **principles/** — stack-neutral principles shared by every pack (security, validation, testing, architecture…)
 - **rules/** — how this stack applies them: Laravel/Vue conventions, coding standards, security, testing
 - **blueprints/** — page/component templates (listing, crud-form, dashboard, login…)
 - **skills/** — step-by-step generators (create-module, create-api, create-policy…)
 - **workflows/** — end-to-end processes (implement-crud, authentication, permissions…)
-- **design-system/** — PrimeVue 4 tokens & component guidance
+- **layouts/** — the app shell and look, one folder per layout: `classic` (default) and `d1` (compact "Noir" shell with list/form/document page components). A project picks one with a `gg13-layout: <id>` line in its `CLAUDE.md` / `AGENTS.md`; without it the skill detects the layout or uses `classic`
+- **design-system/** — PrimeVue 4 component guidance shared by every layout
 - **examples/**, **checklists/**, **prompts/**, **modules/**, **decisions/** (ADRs)
 
 Conventions baked in: Laravel Sanctum auth, the Laravel 11+ slim skeleton, PrimeVue 4 component names, Vite 8 / Pinia 4 / Vue Router 5 / Pest 4 / Tailwind CSS 4, and snake_case JSON APIs.

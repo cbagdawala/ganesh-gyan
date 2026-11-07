@@ -1,5 +1,35 @@
 # Changelog
 
+## 1.5.0 — 2026-11-07
+
+UI layouts become swappable: gg13 now ships two, and each project picks one.
+
+### gg13 pack
+
+- **New `references/layouts/`.** A layout is the shell (layout component,
+  sidebar, topbar, navigation), the design values and any page markup that
+  differs from the shared blueprints. `layouts/README.md` defines how the active
+  layout is chosen (`gg13-layout: <id>` in the project's `CLAUDE.md` /
+  `AGENTS.md` → fingerprint → `classic`), the precedence (layout files override
+  `design-system/` and `blueprints/`, never the stack conventions) and the
+  folder contract.
+- **`classic` layout** = the existing look, unchanged: `design-system/colors.md`,
+  `typography.md` and `spacing.md` moved to `layouts/classic/`, and the navigation
+  section of `design-system/responsive.md` plus the `MainLayout` wiring moved to
+  the new `layouts/classic/shell.md`. Projects without a declaration keep
+  getting classic.
+- **New `d1` layout**, extracted from a production gg13 app and converted to gg13
+  conventions (Tailwind CSS 4, `@primeuix/themes`, Sanctum): `meta.layout`
+  registry, 220px sidebar + 48px topbar, menu-as-data with permission gating,
+  zinc "Noir" preset with a 7-tone status palette, compact 14px density, Inter +
+  JetBrains Mono for numbers; components (`StatusChip`, `ListKpi`,
+  `DetailField`, `LifecycleStepper`…) and blueprints for listing (`ListPage` +
+  `useListPage`), crud-form (`FormPage`), detail-page (`DocumentPanel`) and login.
+- **New `workflows/migrate-layout.md`**: switching a project from classic to d1.
+- `SKILL.md` resolves the active layout before any UI work and routes to
+  `layouts/`; `prompts/improve-ui.md`, `rules/vue.md` and `references/README.md`
+  point to it.
+
 ## 1.4.0 — 2026-11-02
 
 Groundwork for non-Laravel packs: the common layer is now stack-neutral, and
