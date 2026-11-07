@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.5.1 — 2026-11-07
+
+- **Donate link.** The README (and so the npm page) shows a PayPal "Donate"
+  badge and a Support section; `package.json` has a `funding` entry, so
+  `npm fund` lists it; `.github/FUNDING.yml` adds GitHub's Sponsor button.
+  No pack content changed.
+
 ## 1.5.0 — 2026-11-07
 
 UI layouts become swappable: gg13 now ships two, and each project picks one.

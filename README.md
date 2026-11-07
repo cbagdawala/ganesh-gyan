@@ -1,5 +1,8 @@
 # Ganesh Gyan
 
+[![npm](https://img.shields.io/npm/v/ganesh-gyan-cli)](https://www.npmjs.com/package/ganesh-gyan-cli)
+[![Donate with PayPal](https://img.shields.io/badge/Donate-PayPal-00457C?logo=paypal&logoColor=white)](https://paypal.me/cbagdawala)
+
 Cross-harness **Agent Skills** that teach AI coding assistants your stack conventions,
 distributed as one npm CLI (`ganesh-gyan-cli`) with one command per **intelligence pack**:
 
@@ -168,6 +171,11 @@ Every stack bin (`gg13`, `gg8`, `ggci3`, `ggci4`) supports:
 | `<bin> versions` | Print the CLI version |
 
 The generic `gg` bin adds `--stack <id>` to `init`/`update`/`uninstall`.
+
+## Support
+
+If Ganesh Gyan saves you time, you can support its development with a donation:
+**[paypal.me/cbagdawala](https://paypal.me/cbagdawala)**. Thank you!
 
 ## License
 
